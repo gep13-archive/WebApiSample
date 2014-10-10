@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gep13.Sample.Api", "Gep13.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gep13.Sample.Database", "Gep13.Sample.Database\Gep13.Sample.Database.csproj", "{C2061E67-2753-44AA-A53B-126D2D0251E1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gep13.Sample.Api.IntegrationTests", "Gep13.Sample.Api.IntegrationTests\Gep13.Sample.Api.IntegrationTests.csproj", "{9F2D8AC8-A40D-49F8-978B-74235DE4FD98}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,11 +49,16 @@ Global
 		{C2061E67-2753-44AA-A53B-126D2D0251E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2061E67-2753-44AA-A53B-126D2D0251E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2061E67-2753-44AA-A53B-126D2D0251E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F2D8AC8-A40D-49F8-978B-74235DE4FD98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F2D8AC8-A40D-49F8-978B-74235DE4FD98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F2D8AC8-A40D-49F8-978B-74235DE4FD98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F2D8AC8-A40D-49F8-978B-74235DE4FD98}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{63A84FFE-9419-432D-A4E8-152BFB83416A} = {42C1C92B-E537-4D0E-8124-8804B2CA956A}
+		{9F2D8AC8-A40D-49F8-978B-74235DE4FD98} = {42C1C92B-E537-4D0E-8124-8804B2CA956A}
 	EndGlobalSection
 EndGlobal
