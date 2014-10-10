@@ -70,13 +70,12 @@ namespace Gep13.Sample.Api.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public IHttpActionResult Put(int id, ChemicalViewModel chemicalViewModel)
+        public IHttpActionResult Put(ChemicalViewModel chemicalViewModel)
         {
             var found = this.chemicalService.GetChemicalByName(chemicalViewModel.Name);
             if (found.ToList().Count == 0)
             {
-                chemicalViewModel.Id = id;
-                var chemical = this.chemicalService.GetChemicalById(id);
+                var chemical = this.chemicalService.GetChemicalById(chemicalViewModel.Id);
                 Mapper.Map(chemicalViewModel, chemical);
                 this.chemicalService.UpdateChemical(chemical);
                 return this.Ok(chemicalViewModel);

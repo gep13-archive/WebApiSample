@@ -15,10 +15,10 @@ namespace Gep13.Sample.Api.App_Start
     using Autofac;
     using Autofac.Integration.WebApi;
 
-    using Gep13.Sample.Api.Mappers;
-    using Gep13.Sample.Data.Infrastructure;
-    using Gep13.Sample.Data.Repositories;
-    using Gep13.Sample.Service;
+    using Mappers;
+    using Data.Infrastructure;
+    using Data.Repositories;
+    using Service;
 
     public static class Bootstrapper
     {
@@ -36,10 +36,10 @@ namespace Gep13.Sample.Api.App_Start
 
         private static void ConfigureWebApiContainer(ContainerBuilder containerBuilder)
         {
-            containerBuilder.RegisterType<DatabaseFactory>().As<IDatabaseFactory>().AsImplementedInterfaces().InstancePerApiRequest();
-            containerBuilder.RegisterType<UnitOfWork>().As<IUnitOfWork>().AsImplementedInterfaces().InstancePerApiRequest();
-            containerBuilder.RegisterType<ChemicalService>().As<IChemicalService>().InstancePerApiRequest();
-            containerBuilder.RegisterType<ChemicalRepository>().As<IChemicalRepository>().InstancePerApiRequest();
+            containerBuilder.RegisterType<DatabaseFactory>().As<IDatabaseFactory>().AsImplementedInterfaces().InstancePerRequest();
+            containerBuilder.RegisterType<UnitOfWork>().As<IUnitOfWork>().AsImplementedInterfaces().InstancePerRequest();
+            containerBuilder.RegisterType<ChemicalService>().As<IChemicalService>().InstancePerRequest();
+            containerBuilder.RegisterType<ChemicalRepository>().As<IChemicalRepository>().InstancePerRequest();
             
             containerBuilder.RegisterApiControllers(Assembly.GetExecutingAssembly());
             var container = containerBuilder.Build();

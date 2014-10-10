@@ -1,24 +1,16 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AssemblyInfo.cs" company="Gary Ewan Park">
-//   Copyright (c) Gary Ewan Park, 2014, All rights reserved.
-// </copyright>
-// <summary>
-//   Defines the UnitOfWork type.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-using System.Reflection;
+﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Gep13.Sample.Database")]
+[assembly: AssemblyTitle("Gep13.Sample.Service.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("Gep13.Sample.Database")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2014")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("Gep13.Sample.Service.Tests")]
+[assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -28,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("d132c880-1a78-46c3-ad78-29dc8f38caef")]
+[assembly: Guid("eca1bdec-828f-44e1-b55e-bf5d2ef0567e")]
 
 // Version information for an assembly consists of the following four values:
 //
