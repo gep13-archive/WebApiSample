@@ -7,6 +7,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Linq;
+using AutoMapper;
+
 namespace Gep13.Sample.Service
 {
     using System.Collections.Generic;
@@ -31,28 +34,52 @@ namespace Gep13.Sample.Service
             return this.repository.GetAll();
         }
 
-        public Chemical AddChemical(Chemical chemical)
+        public ChemicalViewModel AddChemical(ChemicalViewModel chemical)
         {
-            this.repository.Add(chemical);
-            this.SaveChanges();
-            return chemical;
+
+
+            var found = this.GetChemicalByName(chemical.Name);
+            if (found.ToList().Count == 0)
+            {
+                var entity = Mapper.Map<ChemicalViewModel,Chemical>(chemical);
+                try
+                {
+                    this.repository.Add(entity);
+                    this.SaveChanges();
+                   return Mapper.Map<Chemical, ChemicalViewModel>(entity);
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+
+            return null;
         }
 
-        public Chemical GetChemicalById(int id)
+        public ChemicalViewModel GetChemicalById(int id)
         {
-            return this.repository.GetById(id);
+            return Mapper.Map<Chemical, ChemicalViewModel>(this.repository.GetById(id));
         }
 
-        public IEnumerable<Chemical> GetChemicalByName(string name)
+        public IEnumerable<ChemicalViewModel> GetChemicalByName(string name)
         {
-            return this.repository.GetMany(s => s.Name == name);
+            return Mapper.Map<IEnumerable<Chemical>,IEnumerable<ChemicalViewModel>>(this.repository.GetMany(s => s.Name == name));
         }
 
-        public Chemical UpdateChemical(Chemical chemical)
+        public bool UpdateChemical(ChemicalViewModel chemical)
         {
-            this.repository.Update(chemical);
-            this.SaveChanges();
-            return chemical;
+
+            var found = this.GetChemicalByName(chemical.Name);
+            // Why does getbyname return IEnumerable?? 
+            if (found.ToList().Count == 0) {
+                var entity = Mapper.Map<ChemicalViewModel, Chemical>(chemical);
+                this.repository.Update(entity);
+                this.SaveChanges();
+                return true;
+            }
+
+            return false;
         }
 
         public void DeleteChemical(int chemicalId)
@@ -64,6 +91,7 @@ namespace Gep13.Sample.Service
                 this.SaveChanges();
             }
         }
+
 
         private void SaveChanges()
         {

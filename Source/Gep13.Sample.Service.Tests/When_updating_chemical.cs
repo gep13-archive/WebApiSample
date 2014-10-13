@@ -1,4 +1,7 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Linq;
+using System.Reflection;
+using AutoMapper;
 using Gep13.Sample.Data.Infrastructure;
 using Gep13.Sample.Data.Repositories;
 using Gep13.Sample.Model;
@@ -7,8 +10,8 @@ using NUnit.Framework;
 
 namespace Gep13.Sample.Service.Test {
     [TestFixture]
-    public class When_creating_chemical {
-
+    public class When_updating_chemical {
+        private static Assembly[] assemblies = { Assembly.Load("Gep13.Sample.Service") };
 
         [TestFixtureSetUp]
         public void TestFixtureSetup() {
@@ -17,25 +20,23 @@ namespace Gep13.Sample.Service.Test {
         }
 
         [Test]
-        public void Should_create_chemical() {
-
+        public void Should_update() {
             var fakeRepository = Substitute.For<IChemicalRepository>();
             var fakeUnitOfWork = Substitute.For<IUnitOfWork>();
             var chemicalService = new ChemicalService(fakeRepository, fakeUnitOfWork);
-
-            var toAdd = new ChemicalViewModel {
+           
+            var toUpdate = new Service.ChemicalViewModel {
+                Id = 1,
                 Balance = 110.99,
                 Name = "First"
             };
 
-            //A.CallTo(() => _fakeRepository.Add(???)))
-            fakeRepository.Add(Arg.Do<Chemical>(x => x.Id = 1)).Returns(new Chemical{Id = 1});
 
+            var actual = chemicalService.UpdateChemical(toUpdate);
 
-            var chemical = chemicalService.AddChemical(toAdd);
-
-            Assert.That(chemical.Id, Is.EqualTo(1));
+            fakeRepository.Received().Update(Arg.Any<Chemical>());
             fakeUnitOfWork.Received().SaveChanges();
         }
+
     }
 }

@@ -17,13 +17,13 @@ namespace Gep13.Sample.Service
     {
         IEnumerable<Chemical> GetChemicals();
 
-        Chemical AddChemical(Chemical chemical);
+        ChemicalViewModel AddChemical(ChemicalViewModel chemical);
 
-        Chemical GetChemicalById(int id);
+        ChemicalViewModel GetChemicalById(int id);
 
-        IEnumerable<Chemical> GetChemicalByName(string name);
+        IEnumerable<ChemicalViewModel> GetChemicalByName(string name);
 
-        Chemical UpdateChemical(Chemical chemical);
+        bool UpdateChemical(ChemicalViewModel chemical);
 
         void DeleteChemical(int chemicalId);
     }

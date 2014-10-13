@@ -34,6 +34,7 @@ namespace Gep13.Sample.Api.Tests
         private static Assembly[] assemblies = { Assembly.Load("Gep13.Sample.Api") };
         private static IContainer container;
         private Chemical chemical = new Chemical { Id = 1, Name = "Chemical1", IsArchived = false, Balance = 1 };
+        private Service.ChemicalViewModel serviceViewModel = new Service.ChemicalViewModel { Id = 1, Name = "Chemical1", IsArchived = false, Balance = 1 };
 
         [TestFixtureSetUp]
         public void FixtureInit()
@@ -41,7 +42,7 @@ namespace Gep13.Sample.Api.Tests
             SetupAutoMapper();
             var containerBuilder = new ContainerBuilder();
             var service = A.Fake<IChemicalService>();
-            A.CallTo(() => service.GetChemicalById(1)).Returns(this.chemical);
+            A.CallTo(() => service.GetChemicalById(1)).Returns(this.serviceViewModel);
             containerBuilder.RegisterType<DatabaseFactory>().As<IDatabaseFactory>().AsImplementedInterfaces();
             containerBuilder.RegisterType<UnitOfWork>().As<IUnitOfWork>().AsImplementedInterfaces();
             containerBuilder.RegisterType<ChemicalRepository>().As<IChemicalRepository>();
@@ -60,7 +61,7 @@ namespace Gep13.Sample.Api.Tests
             var service = container.Resolve<IChemicalService>();
             var controller = new ChemicalController(service);
             var actionResult = controller.Get(1);
-            var negResult = actionResult as OkNegotiatedContentResult<ChemicalViewModel>;
+            var negResult = actionResult as OkNegotiatedContentResult<ViewModels.ChemicalViewModel>;
 
             Assert.IsNotNull(negResult);
 

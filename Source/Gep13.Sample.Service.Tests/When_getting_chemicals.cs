@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Security.Cryptography.X509Certificates;
+using AutoMapper;
 using Gep13.Sample.Data.Infrastructure;
 using Gep13.Sample.Data.Repositories;
 using Gep13.Sample.Model;
@@ -18,6 +16,10 @@ namespace Gep13.Sample.Service.Test {
         private ChemicalService _chemicalService;
         private List<Chemical> _checmicals;
 
+        [TestFixtureSetUp]
+        public void TestFixtureSetup() {
+            Mapper.CreateMap<Chemical, ChemicalViewModel>();
+        }
 
         [SetUp]
         public void SetUp()
