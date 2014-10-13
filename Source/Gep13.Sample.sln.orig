@@ -11,17 +11,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gep13.Sample.Service", "Gep
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{42C1C92B-E537-4D0E-8124-8804B2CA956A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gep13.Sample.Api.Tests", "Gep13.Sample.Api.Tests\Gep13.Sample.Api.Tests.csproj", "{63A84FFE-9419-432D-A4E8-152BFB83416A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gep13.Sample.Api", "Gep13.Sample.Api\Gep13.Sample.Api.csproj", "{12ADAB22-983D-4B16-870B-9B57C8389E56}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gep13.Sample.Database", "Gep13.Sample.Database\Gep13.Sample.Database.csproj", "{C2061E67-2753-44AA-A53B-126D2D0251E1}"
 EndProject
-<<<<<<< HEAD
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gep13.Sample.Api.IntegrationTests", "Gep13.Sample.Api.IntegrationTests\Gep13.Sample.Api.IntegrationTests.csproj", "{9F2D8AC8-A40D-49F8-978B-74235DE4FD98}"
-=======
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gep13.Sample.Service.Tests", "Gep13.Sample.Service.Tests\Gep13.Sample.Service.Tests.csproj", "{D61A405E-1211-49C1-80D8-03EFCB8F2AED}"
->>>>>>> Add tests for service, and using NSubstitute rather than FakeItEasy
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gep13.Sample.Api.IntegrationTests", "Gep13.Sample.Api.IntegrationTests\Gep13.Sample.Api.IntegrationTests.csproj", "{9F2D8AC8-A40D-49F8-978B-74235DE4FD98}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +37,6 @@ Global
 		{941818D4-68FB-40C7-9CC0-79410EDF3374}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{941818D4-68FB-40C7-9CC0-79410EDF3374}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{941818D4-68FB-40C7-9CC0-79410EDF3374}.Release|Any CPU.Build.0 = Release|Any CPU
-		{63A84FFE-9419-432D-A4E8-152BFB83416A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{63A84FFE-9419-432D-A4E8-152BFB83416A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{63A84FFE-9419-432D-A4E8-152BFB83416A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{63A84FFE-9419-432D-A4E8-152BFB83416A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{12ADAB22-983D-4B16-870B-9B57C8389E56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{12ADAB22-983D-4B16-870B-9B57C8389E56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12ADAB22-983D-4B16-870B-9B57C8389E56}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -53,27 +45,23 @@ Global
 		{C2061E67-2753-44AA-A53B-126D2D0251E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2061E67-2753-44AA-A53B-126D2D0251E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2061E67-2753-44AA-A53B-126D2D0251E1}.Release|Any CPU.Build.0 = Release|Any CPU
-<<<<<<< HEAD
-		{9F2D8AC8-A40D-49F8-978B-74235DE4FD98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9F2D8AC8-A40D-49F8-978B-74235DE4FD98}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9F2D8AC8-A40D-49F8-978B-74235DE4FD98}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9F2D8AC8-A40D-49F8-978B-74235DE4FD98}.Release|Any CPU.Build.0 = Release|Any CPU
-=======
 		{D61A405E-1211-49C1-80D8-03EFCB8F2AED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D61A405E-1211-49C1-80D8-03EFCB8F2AED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D61A405E-1211-49C1-80D8-03EFCB8F2AED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D61A405E-1211-49C1-80D8-03EFCB8F2AED}.Release|Any CPU.Build.0 = Release|Any CPU
->>>>>>> Add tests for service, and using NSubstitute rather than FakeItEasy
+		{9F2D8AC8-A40D-49F8-978B-74235DE4FD98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F2D8AC8-A40D-49F8-978B-74235DE4FD98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F2D8AC8-A40D-49F8-978B-74235DE4FD98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F2D8AC8-A40D-49F8-978B-74235DE4FD98}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{63A84FFE-9419-432D-A4E8-152BFB83416A} = {42C1C92B-E537-4D0E-8124-8804B2CA956A}
 <<<<<<< HEAD
-		{9F2D8AC8-A40D-49F8-978B-74235DE4FD98} = {42C1C92B-E537-4D0E-8124-8804B2CA956A}
-=======
 		{D61A405E-1211-49C1-80D8-03EFCB8F2AED} = {42C1C92B-E537-4D0E-8124-8804B2CA956A}
->>>>>>> Add tests for service, and using NSubstitute rather than FakeItEasy
+=======
+>>>>>>> Refactoring to use OWIN Hosting for Integration Testing
+		{9F2D8AC8-A40D-49F8-978B-74235DE4FD98} = {42C1C92B-E537-4D0E-8124-8804B2CA956A}
 	EndGlobalSection
 EndGlobal

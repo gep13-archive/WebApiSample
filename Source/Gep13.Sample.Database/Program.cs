@@ -14,6 +14,7 @@ namespace Gep13.Sample.Database
     using System.Reflection;
 
     using DbUp;
+    using DbUp.Helpers;
 
     public static class Program
     {
@@ -22,8 +23,7 @@ namespace Gep13.Sample.Database
             var connectionString = ConfigurationManager.ConnectionStrings["Gep13"].ConnectionString;
 
             var upgrader =
-                DeployChanges.To
-                    .SqlDatabase(connectionString)
+                DeployChanges.To.SqlDatabase(connectionString)
                     .WithScriptsEmbeddedInAssembly(Assembly.GetExecutingAssembly())
                     .LogToConsole()
                     .Build();
