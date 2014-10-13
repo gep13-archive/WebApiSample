@@ -49,6 +49,8 @@
   <ItemGroup>
     <Compile Include="When_creating_chemical.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="When_deleting_chemicals.cs" />
+    <Compile Include="When_getting_chemicals.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

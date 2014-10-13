@@ -4,38 +4,16 @@ using Gep13.Sample.Model;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace Gep13.Sample.Service.Test
-{
+namespace Gep13.Sample.Service.Test {
     [TestFixture]
-    public class When_creating_chemical
-    {
-        private IChemicalRepository _fakeRepository;
-        private IUnitOfWork _fakeUnitOfWork;
-        private ChemicalService _chemicalService;
-
-
-        [SetUp]
-        public void SetUp() {
-            _fakeRepository =  Substitute.For<IChemicalRepository>();
-            _fakeUnitOfWork = Substitute.For<IUnitOfWork>();
-            _chemicalService = new ChemicalService(_fakeRepository, _fakeUnitOfWork);
-        }
-
-        [Test]
-        public void Should_get_chemical() {
-            
-            //A.CallTo(() => _fakeRepository.GetById(1)).Returns(new Chemical { Id = 1 });
-            _fakeRepository.GetById(1).Returns(new Chemical { Id = 1 });
-
-            var checmical = _chemicalService.GetChemicalById(1);
-
-            Assert.That(checmical.Id, Is.EqualTo(1));
-            //A.CallTo(()=> _fakeRepository.GetById(1)).MustHaveHappened();
-            _fakeRepository.Received().GetById(1);
-        }
+    public class When_creating_chemical {
 
         [Test]
         public void Should_create_chemical() {
+
+            var fakeRepository = Substitute.For<IChemicalRepository>();
+            var fakeUnitOfWork = Substitute.For<IUnitOfWork>();
+            var chemicalService = new ChemicalService(fakeRepository, fakeUnitOfWork);
 
             var toAdd = new Chemical {
                 Balance = 110.99,
@@ -43,13 +21,13 @@ namespace Gep13.Sample.Service.Test
             };
 
             //A.CallTo(() => _fakeRepository.Add(???)))
-            _fakeRepository.Add(Arg.Do<Chemical>(x => x.Id =1)).Returns(toAdd);
-            _fakeUnitOfWork.SaveChanges();
+            fakeRepository.Add(Arg.Do<Chemical>(x => x.Id = 1)).Returns(toAdd);
 
-            var chemical = _chemicalService.AddChemical(toAdd);
+
+            var chemical = chemicalService.AddChemical(toAdd);
 
             Assert.That(chemical.Id, Is.EqualTo(1));
-
+            fakeUnitOfWork.Received().SaveChanges();
         }
     }
 }
