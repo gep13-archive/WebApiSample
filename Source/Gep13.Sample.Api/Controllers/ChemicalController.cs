@@ -29,16 +29,14 @@ namespace Gep13.Sample.Api.Controllers
 
         public IHttpActionResult Get()
         {
-            var chemicals = this.chemicalService.GetChemicals();
-            var chemicalViewModels = new List<ViewModels.ChemicalViewModel>();
-            Mapper.Map(chemicals, chemicalViewModels);
+            var chemicalViewModels = Mapper.Map<IEnumerable<ChemicalDTO>, IEnumerable<ChemicalViewModel>>(this.chemicalService.GetChemicals());
             return this.Ok(chemicalViewModels);
         }
 
         public IHttpActionResult Get(int id)
         {
-            var viewModel = Mapper.Map<ChemicalDTO, ChemicalViewModel>(this.chemicalService.GetChemicalById(id));
-            return this.Ok(viewModel);
+            var chemicalViewModel = Mapper.Map<ChemicalDTO, ChemicalViewModel>(this.chemicalService.GetChemicalById(id));
+            return this.Ok(chemicalViewModel);
         }
 
         [Authorize(Roles = "Admin")]
@@ -69,10 +67,12 @@ namespace Gep13.Sample.Api.Controllers
         [Authorize(Roles = "Admin")]
         public IHttpActionResult Archive(int id)
         {
-            var chemical = this.chemicalService.GetChemicalById(id);
-            chemical.IsArchived = true;
-            this.chemicalService.UpdateChemical(chemical);
-            return this.Ok();
+            if (this.chemicalService.ArchiveChemical(id))
+            {
+                return this.Ok();
+            }
+
+            return this.StatusCode(HttpStatusCode.Conflict);
         }
     }
 }

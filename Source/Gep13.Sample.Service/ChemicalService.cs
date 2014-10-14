@@ -60,6 +60,20 @@ namespace Gep13.Sample.Service
             }
         }
 
+        public bool ArchiveChemical(int id)
+        {
+            var found = this.GetChemicalById(id);
+
+            if (found != null)
+            {
+                found.IsArchived = true;
+                this.UpdateChemical(found);
+                return true;
+            }
+
+            return false;
+        }
+
         public ChemicalDTO GetChemicalById(int id)
         {
             return Mapper.Map<Chemical, ChemicalDTO>(this.repository.GetById(id));
@@ -70,9 +84,10 @@ namespace Gep13.Sample.Service
             return Mapper.Map<IEnumerable<Chemical>, IEnumerable<ChemicalDTO>>(this.repository.GetMany(s => s.Name == name));
         }
 
-        public IEnumerable<Chemical> GetChemicals()
+        public IEnumerable<ChemicalDTO> GetChemicals()
         {
-            return this.repository.GetAll();
+            var chemicals = this.repository.GetAll();
+            return Mapper.Map<IEnumerable<Chemical>, IEnumerable<ChemicalDTO>>(chemicals);
         }
 
         public bool UpdateChemical(ChemicalDTO chemical)
