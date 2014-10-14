@@ -37,5 +37,12 @@ namespace Gep13.Sample.Api.IntegrationTests
             var response = this.testServer.HttpClient.GetAsync("/api/Chemical").Result;
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
+
+        [Test]
+        public void GetChemical_WhenRequested_ShouldReturnJson()
+        {
+            var response = this.testServer.HttpClient.GetAsync("/api/Chemical").Result;
+            Assert.AreEqual("application/json", response.Content.Headers.ContentType.MediaType);
+        }
     }
 }
