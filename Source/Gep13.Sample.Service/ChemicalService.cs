@@ -34,46 +34,49 @@ namespace Gep13.Sample.Service
             return this.repository.GetAll();
         }
 
-        public ChemicalViewModel AddChemical(ChemicalViewModel chemical)
+        public ChemicalDTO AddChemical(string name, double balance)
         {
-
-
-            var found = this.GetChemicalByName(chemical.Name);
-            if (found.ToList().Count == 0)
+            if (this.GetByName(name).Any())
             {
-                var entity = Mapper.Map<ChemicalViewModel,Chemical>(chemical);
-                try
-                {
-                    this.repository.Add(entity);
-                    this.SaveChanges();
-                   return Mapper.Map<Chemical, ChemicalViewModel>(entity);
-                }
-                catch
-                {
-                    return null;
-                }
+                return null;
             }
 
-            return null;
+            var entity = new Chemical {Name = name, Balance = balance};
+            try
+            {
+                this.repository.Add(entity);
+                this.SaveChanges();
+                return Mapper.Map<Chemical, ChemicalDTO>(entity);
+            }
+            catch
+            {
+                return null;
+            }
+
         }
 
-        public ChemicalViewModel GetChemicalById(int id)
+        public ChemicalDTO GetChemicalById(int id)
         {
-            return Mapper.Map<Chemical, ChemicalViewModel>(this.repository.GetById(id));
+            return Mapper.Map<Chemical, ChemicalDTO>(this.repository.GetById(id));
         }
 
-        public IEnumerable<ChemicalViewModel> GetChemicalByName(string name)
+        public IEnumerable<ChemicalDTO> GetChemicalByName(string name)
         {
-            return Mapper.Map<IEnumerable<Chemical>,IEnumerable<ChemicalViewModel>>(this.repository.GetMany(s => s.Name == name));
+            return Mapper.Map<IEnumerable<Chemical>,IEnumerable<ChemicalDTO>>(this.repository.GetMany(s => s.Name == name));
         }
 
-        public bool UpdateChemical(ChemicalViewModel chemical)
+        private IEnumerable<Chemical> GetByName(string name)
+        {
+            return this.repository.GetMany(s => s.Name == name);
+        }
+
+        public bool UpdateChemical(ChemicalDTO chemical)
         {
 
             var found = this.GetChemicalByName(chemical.Name);
             // Why does getbyname return IEnumerable?? 
             if (found.ToList().Count == 0) {
-                var entity = Mapper.Map<ChemicalViewModel, Chemical>(chemical);
+                var entity = Mapper.Map<ChemicalDTO, Chemical>(chemical);
                 this.repository.Update(entity);
                 this.SaveChanges();
                 return true;

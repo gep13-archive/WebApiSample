@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Gep13.Sample.Api.ViewModels;
+
 namespace Gep13.Sample.Api.Controllers
 {
     using System.Collections.Generic;
@@ -35,27 +37,28 @@ namespace Gep13.Sample.Api.Controllers
 
         public IHttpActionResult Get(int id)
         {
-            return this.Ok(this.chemicalService.GetChemicalById(id));
+            var viewModel = Mapper.Map<ChemicalDTO, ChemicalViewModel>(this.chemicalService.GetChemicalById(id));
+            return this.Ok(viewModel);
         }
 
         [Authorize(Roles = "Admin")]
-        public IHttpActionResult Post(Service.ChemicalViewModel chemicalViewModel) {
+        public IHttpActionResult Post(ChemicalViewModel chemical) {
 
-            var item = chemicalService.AddChemical(chemicalViewModel);
+            var item = chemicalService.AddChemical(chemical.Name, chemical.Balance);
 
             if (item == null) {
                 return this.StatusCode(HttpStatusCode.Conflict);
             }
 
-            return this.Created(this.Url.Link("DefaultApi", new { controller = "Chemical", id = chemicalViewModel.Id }), chemicalViewModel);
+            return this.Created(this.Url.Link("DefaultApi", new { controller = "Chemical", id = item.Id }), item);
         }
 
         [Authorize(Roles = "Admin")]
-        public IHttpActionResult Put(Service.ChemicalViewModel chemicalViewModel)
+        public IHttpActionResult Put(Service.ChemicalDTO chemicalDto)
         {
 
-            if (chemicalService.UpdateChemical(chemicalViewModel)) {
-                return this.Ok(chemicalViewModel);
+            if (chemicalService.UpdateChemical(chemicalDto)) {
+                return this.Ok(chemicalDto);
             }
 
             return this.StatusCode(HttpStatusCode.Conflict);

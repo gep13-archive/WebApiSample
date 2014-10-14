@@ -18,7 +18,7 @@ namespace Gep13.Sample.Service.Test {
 
         [TestFixtureSetUp]
         public void TestFixtureSetup() {
-            Mapper.CreateMap<Chemical, ChemicalViewModel>();
+            Mapper.CreateMap<Chemical, ChemicalDTO>();
         }
 
         [SetUp]

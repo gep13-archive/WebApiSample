@@ -1,4 +1,7 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using AutoMapper;
 using Gep13.Sample.Data.Infrastructure;
 using Gep13.Sample.Data.Repositories;
 using Gep13.Sample.Model;
@@ -12,8 +15,8 @@ namespace Gep13.Sample.Service.Test {
 
         [TestFixtureSetUp]
         public void TestFixtureSetup() {
-            Mapper.CreateMap<ChemicalViewModel, Chemical>();
-            Mapper.CreateMap<Chemical, ChemicalViewModel>();
+            Mapper.CreateMap<ChemicalDTO, Chemical>();
+            Mapper.CreateMap<Chemical, ChemicalDTO>();
         }
 
         [Test]
@@ -23,16 +26,17 @@ namespace Gep13.Sample.Service.Test {
             var fakeUnitOfWork = Substitute.For<IUnitOfWork>();
             var chemicalService = new ChemicalService(fakeRepository, fakeUnitOfWork);
 
-            var toAdd = new ChemicalViewModel {
+            var toAdd = new ChemicalDTO {
                 Balance = 110.99,
                 Name = "First"
             };
 
+            fakeRepository.GetMany(Arg.Any<Expression<Func<Chemical,bool>>>()).ReturnsForAnyArgs(x => new List<Chemical>());
             //A.CallTo(() => _fakeRepository.Add(???)))
             fakeRepository.Add(Arg.Do<Chemical>(x => x.Id = 1)).Returns(new Chemical{Id = 1});
 
 
-            var chemical = chemicalService.AddChemical(toAdd);
+            var chemical = chemicalService.AddChemical("First", 110.99);
 
             Assert.That(chemical.Id, Is.EqualTo(1));
             fakeUnitOfWork.Received().SaveChanges();

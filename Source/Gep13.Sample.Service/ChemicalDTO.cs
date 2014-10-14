@@ -1,15 +1,15 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ChemicalViewModel.cs" company="Gary Ewan Park">
+// <copyright file="ChemicalDTO.cs" company="Gary Ewan Park">
 //   Copyright (c) Gary Ewan Park, 2014, All rights reserved.
 // </copyright>
 // <summary>
-//   Defines the ChemicalViewModel type.
+//   Defines the ChemicalDTO type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Gep13.Sample.Service
 {
-    public class ChemicalViewModel
+    public class ChemicalDTO
     {
         public int Id { get; set; }
 

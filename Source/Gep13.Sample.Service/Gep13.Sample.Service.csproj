@@ -47,7 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChemicalService.cs" />
-    <Compile Include="ChemicalViewModel.cs" />
+    <Compile Include="ChemicalDTO.cs" />
     <Compile Include="IChemicalService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
