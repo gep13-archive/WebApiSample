@@ -1,49 +1,59 @@
-﻿using Gep13.Sample.Data.Infrastructure;
-using Gep13.Sample.Data.Repositories;
-using Gep13.Sample.Model;
-using NSubstitute;
-using NUnit.Framework;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="When_deleting_chemicals.cs" company="Gary Ewan Park">
+//   Copyright (c) Gary Ewan Park, 2014, All rights reserved.
+// </copyright>
+// <summary>
+//   Defines the When_deleting_chemicals type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
-namespace Gep13.Sample.Service.Test {
+namespace Gep13.Sample.Service.Test 
+{
+    using Gep13.Sample.Data.Infrastructure;
+    using Gep13.Sample.Data.Repositories;
+    using Gep13.Sample.Model;
+
+    using NSubstitute;
+
+    using NUnit.Framework;
+
     [TestFixture]
-    public class When_deleting_chemicals {
+    public class When_deleting_chemicals 
+    {
+        private IChemicalRepository fakeChemicalRepository;
+        private IUnitOfWork fakeUnitOfWork;
+        private ChemicalService chemicalService;
         
-        private IChemicalRepository _fakeRepository;
-        private IUnitOfWork _fakeUnitOfWork;
-        private ChemicalService _chemicalService;
-
-
         [SetUp]
         public void SetUp()
         {
-            _fakeRepository = Substitute.For<IChemicalRepository>();
-            _fakeUnitOfWork = Substitute.For<IUnitOfWork>();
-            _chemicalService = new ChemicalService(_fakeRepository, _fakeUnitOfWork);
+            this.fakeChemicalRepository = Substitute.For<IChemicalRepository>();
+            this.fakeUnitOfWork = Substitute.For<IUnitOfWork>();
+            this.chemicalService = new ChemicalService(this.fakeChemicalRepository, this.fakeUnitOfWork);
         }
 
         [Test]
         public void Should_delete_chemical()
         {
-
             var fakeChemical = new Chemical { Id = 1 };
 
-            _fakeRepository.GetById(Arg.Any<int>()).Returns(fakeChemical);
+            this.fakeChemicalRepository.GetById(Arg.Any<int>()).Returns(fakeChemical);
 
-            _chemicalService.DeleteChemical(1);
+            this.chemicalService.DeleteChemical(1);
 
-            _fakeRepository.Received().Delete(fakeChemical);
-            _fakeUnitOfWork.Received().SaveChanges();
+            this.fakeChemicalRepository.Received().Delete(fakeChemical);
+            this.fakeUnitOfWork.Received().SaveChanges();
         }
 
         [Test]
         public void Should_not_delete_chemical_if_not_found()
         {
-            _fakeRepository.GetById(Arg.Any<int>()).Returns(r => null);
+            this.fakeChemicalRepository.GetById(Arg.Any<int>()).Returns(r => null);
 
-            _chemicalService.DeleteChemical(1);
+            this.chemicalService.DeleteChemical(1);
 
-            _fakeRepository.DidNotReceive().Delete(Arg.Any<Chemical>());
-            _fakeUnitOfWork.DidNotReceive().SaveChanges();
+            this.fakeChemicalRepository.DidNotReceive().Delete(Arg.Any<Chemical>());
+            this.fakeUnitOfWork.DidNotReceive().SaveChanges();
         }         
     }
 }

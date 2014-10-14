@@ -7,8 +7,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Gep13.Sample.Api.ViewModels;
-
 namespace Gep13.Sample.Api.Controllers
 {
     using System.Collections.Generic;
@@ -16,6 +14,8 @@ namespace Gep13.Sample.Api.Controllers
     using System.Web.Http;
 
     using AutoMapper;
+
+    using Gep13.Sample.Api.ViewModels;
     using Gep13.Sample.Service;
 
     public class ChemicalController : ApiController
@@ -42,11 +42,12 @@ namespace Gep13.Sample.Api.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public IHttpActionResult Post(ChemicalViewModel chemical) {
+        public IHttpActionResult Post(ChemicalViewModel chemical) 
+        {
+            var item = this.chemicalService.AddChemical(chemical.Name, chemical.Balance);
 
-            var item = chemicalService.AddChemical(chemical.Name, chemical.Balance);
-
-            if (item == null) {
+            if (item == null) 
+            {
                 return this.StatusCode(HttpStatusCode.Conflict);
             }
 
@@ -56,8 +57,8 @@ namespace Gep13.Sample.Api.Controllers
         [Authorize(Roles = "Admin")]
         public IHttpActionResult Put(Service.ChemicalDTO chemicalDto)
         {
-
-            if (chemicalService.UpdateChemical(chemicalDto)) {
+            if (this.chemicalService.UpdateChemical(chemicalDto)) 
+            {
                 return this.Ok(chemicalDto);
             }
 

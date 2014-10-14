@@ -15,10 +15,10 @@ namespace Gep13.Sample.Api.App_Start
     using Autofac;
     using Autofac.Integration.WebApi;
 
-    using Mappers;
-    using Data.Infrastructure;
-    using Data.Repositories;
-    using Service;
+    using Gep13.Sample.Api.Mappers;
+    using Gep13.Sample.Data.Infrastructure;
+    using Gep13.Sample.Data.Repositories;
+    using Gep13.Sample.Service;
 
     public static class Bootstrapper
     {

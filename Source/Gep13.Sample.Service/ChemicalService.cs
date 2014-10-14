@@ -7,12 +7,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Linq;
-using AutoMapper;
-
 namespace Gep13.Sample.Service
 {
     using System.Collections.Generic;
+    using System.Linq;
+
+    using AutoMapper;
 
     using Gep13.Sample.Data.Infrastructure;
     using Gep13.Sample.Data.Repositories;
@@ -29,11 +29,6 @@ namespace Gep13.Sample.Service
             this.unitOfWork = unitOfWork;
         }
 
-        public IEnumerable<Chemical> GetChemicals()
-        {
-            return this.repository.GetAll();
-        }
-
         public ChemicalDTO AddChemical(string name, double balance)
         {
             if (this.GetByName(name).Any())
@@ -41,7 +36,8 @@ namespace Gep13.Sample.Service
                 return null;
             }
 
-            var entity = new Chemical {Name = name, Balance = balance};
+            var entity = new Chemical { Name = name, Balance = balance };
+
             try
             {
                 this.repository.Add(entity);
@@ -52,37 +48,6 @@ namespace Gep13.Sample.Service
             {
                 return null;
             }
-
-        }
-
-        public ChemicalDTO GetChemicalById(int id)
-        {
-            return Mapper.Map<Chemical, ChemicalDTO>(this.repository.GetById(id));
-        }
-
-        public IEnumerable<ChemicalDTO> GetChemicalByName(string name)
-        {
-            return Mapper.Map<IEnumerable<Chemical>,IEnumerable<ChemicalDTO>>(this.repository.GetMany(s => s.Name == name));
-        }
-
-        private IEnumerable<Chemical> GetByName(string name)
-        {
-            return this.repository.GetMany(s => s.Name == name);
-        }
-
-        public bool UpdateChemical(ChemicalDTO chemical)
-        {
-
-            var found = this.GetChemicalByName(chemical.Name);
-            // Why does getbyname return IEnumerable?? 
-            if (found.ToList().Count == 0) {
-                var entity = Mapper.Map<ChemicalDTO, Chemical>(chemical);
-                this.repository.Update(entity);
-                this.SaveChanges();
-                return true;
-            }
-
-            return false;
         }
 
         public void DeleteChemical(int chemicalId)
@@ -95,6 +60,41 @@ namespace Gep13.Sample.Service
             }
         }
 
+        public ChemicalDTO GetChemicalById(int id)
+        {
+            return Mapper.Map<Chemical, ChemicalDTO>(this.repository.GetById(id));
+        }
+
+        public IEnumerable<ChemicalDTO> GetChemicalByName(string name)
+        {
+            return Mapper.Map<IEnumerable<Chemical>, IEnumerable<ChemicalDTO>>(this.repository.GetMany(s => s.Name == name));
+        }
+
+        public IEnumerable<Chemical> GetChemicals()
+        {
+            return this.repository.GetAll();
+        }
+
+        public bool UpdateChemical(ChemicalDTO chemical)
+        {
+            var found = this.GetChemicalByName(chemical.Name);
+
+            // Why does getbyname return IEnumerable?? 
+            if (found.ToList().Count == 0)
+            {
+                var entity = Mapper.Map<ChemicalDTO, Chemical>(chemical);
+                this.repository.Update(entity);
+                this.SaveChanges();
+                return true;
+            }
+
+            return false;
+        }
+
+        private IEnumerable<Chemical> GetByName(string name)
+        {
+            return this.repository.GetMany(s => s.Name == name);
+        }
 
         private void SaveChanges()
         {
