@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.ComponentModel.Design;
+
 namespace Gep13.Sample.Service
 {
     using System.Collections.Generic;
@@ -62,12 +64,13 @@ namespace Gep13.Sample.Service
 
         public bool ArchiveChemical(int id)
         {
-            var found = this.GetChemicalById(id);
+            var found = this.GetById(id);
 
             if (found != null)
             {
                 found.IsArchived = true;
-                this.UpdateChemical(found);
+                this.repository.Update(found);
+                this.unitOfWork.SaveChanges();
                 return true;
             }
 
@@ -76,12 +79,12 @@ namespace Gep13.Sample.Service
 
         public ChemicalDTO GetChemicalById(int id)
         {
-            return Mapper.Map<Chemical, ChemicalDTO>(this.repository.GetById(id));
+            return Mapper.Map<Chemical, ChemicalDTO>(this.GetById(id));
         }
 
         public IEnumerable<ChemicalDTO> GetChemicalByName(string name)
         {
-            return Mapper.Map<IEnumerable<Chemical>, IEnumerable<ChemicalDTO>>(this.repository.GetMany(s => s.Name == name));
+            return Mapper.Map<IEnumerable<Chemical>, IEnumerable<ChemicalDTO>>(this.GetByName(name));
         }
 
         public IEnumerable<ChemicalDTO> GetChemicals()
@@ -92,10 +95,9 @@ namespace Gep13.Sample.Service
 
         public bool UpdateChemical(ChemicalDTO chemical)
         {
-            var found = this.GetChemicalByName(chemical.Name);
+            var found = this.GetByName(chemical.Name);
 
-            // Why does getbyname return IEnumerable?? 
-            if (found.ToList().Count == 0)
+            if (!found.Any())
             {
                 var entity = Mapper.Map<ChemicalDTO, Chemical>(chemical);
                 this.repository.Update(entity);
@@ -109,6 +111,11 @@ namespace Gep13.Sample.Service
         private IEnumerable<Chemical> GetByName(string name)
         {
             return this.repository.GetMany(s => s.Name == name);
+        }
+
+        private Chemical GetById(int id) 
+        {
+            return this.repository.GetById(id);
         }
 
         private void SaveChanges()
