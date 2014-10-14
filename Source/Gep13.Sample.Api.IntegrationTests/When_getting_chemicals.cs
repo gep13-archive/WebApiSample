@@ -15,7 +15,7 @@ namespace Gep13.Sample.Api.IntegrationTests
 
     using NUnit.Framework;
 
-    public class ChemicalControllerIntegrationTests
+    public class When_getting_chemicals
     {
         private TestServer testServer;
 
@@ -32,14 +32,14 @@ namespace Gep13.Sample.Api.IntegrationTests
         }
 
         [Test]
-        public void ResponseShouldReturnOk()
+        public void Should_get_statuscodeok_response()
         {
             var response = this.testServer.HttpClient.GetAsync("/api/Chemical").Result;
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
         [Test]
-        public void GetChemical_WhenRequested_ShouldReturnJson()
+        public void Should_get_json_response()
         {
             var response = this.testServer.HttpClient.GetAsync("/api/Chemical").Result;
             Assert.AreEqual("application/json", response.Content.Headers.ContentType.MediaType);
