@@ -15,16 +15,18 @@ namespace Gep13.Sample.Service
 
     public interface IChemicalService
     {
-        IEnumerable<Chemical> GetChemicals();
+        IEnumerable<ChemicalDTO> GetChemicals();
 
-        Chemical AddChemical(Chemical chemical);
+        ChemicalDTO AddChemical(string name, double balance);
 
-        Chemical GetChemicalById(int id);
+        ChemicalDTO GetChemicalById(int id);
 
-        IEnumerable<Chemical> GetChemicalByName(string name);
+        IEnumerable<ChemicalDTO> GetChemicalByName(string name);
 
-        Chemical UpdateChemical(Chemical chemical);
+        bool UpdateChemical(ChemicalDTO chemical);
 
         void DeleteChemical(int chemicalId);
+
+        bool ArchiveChemical(int id);
     }
 }

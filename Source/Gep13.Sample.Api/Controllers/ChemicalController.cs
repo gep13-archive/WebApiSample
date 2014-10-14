@@ -10,14 +10,12 @@
 namespace Gep13.Sample.Api.Controllers
 {
     using System.Collections.Generic;
-    using System.Linq;
     using System.Net;
     using System.Web.Http;
 
     using AutoMapper;
 
     using Gep13.Sample.Api.ViewModels;
-    using Gep13.Sample.Model;
     using Gep13.Sample.Service;
 
     public class ChemicalController : ApiController
@@ -31,55 +29,35 @@ namespace Gep13.Sample.Api.Controllers
 
         public IHttpActionResult Get()
         {
-            var chemicals = this.chemicalService.GetChemicals();
-            var chemicalViewModels = new List<ChemicalViewModel>();
-            Mapper.Map(chemicals, chemicalViewModels);
+            var chemicalViewModels = Mapper.Map<IEnumerable<ChemicalDTO>, IEnumerable<ChemicalViewModel>>(this.chemicalService.GetChemicals());
             return this.Ok(chemicalViewModels);
         }
 
         public IHttpActionResult Get(int id)
         {
-            var chemical = this.chemicalService.GetChemicalById(id);
-            var viewModel = new ChemicalViewModel();
-            Mapper.Map(chemical, viewModel);
-            return this.Ok(viewModel);
+            var chemicalViewModel = Mapper.Map<ChemicalDTO, ChemicalViewModel>(this.chemicalService.GetChemicalById(id));
+            return this.Ok(chemicalViewModel);
         }
 
         [Authorize(Roles = "Admin")]
-        public IHttpActionResult Post(ChemicalViewModel chemicalViewModel)
+        public IHttpActionResult Post(ChemicalViewModel chemical) 
         {
-            var found = this.chemicalService.GetChemicalByName(chemicalViewModel.Name);
-            if (found.ToList().Count == 0)
-            {
-                var entity = new Chemical();
-                Mapper.Map(chemicalViewModel, entity);
-                try
-                {
-                    this.chemicalService.AddChemical(entity);
-                    Mapper.Map(entity, chemicalViewModel);
-                }
-                catch
-                {
-                    return this.StatusCode(HttpStatusCode.Conflict);
-                }
+            var item = this.chemicalService.AddChemical(chemical.Name, chemical.Balance);
 
-                return this.Created(this.Url.Link("DefaultApi", new { controller = "Chemical", id = chemicalViewModel.Id }), chemicalViewModel);
+            if (item == null) 
+            {
+                return this.StatusCode(HttpStatusCode.Conflict);
             }
 
-            return this.StatusCode(HttpStatusCode.Conflict);
+            return this.Created(this.Url.Link("DefaultApi", new { controller = "Chemical", id = item.Id }), item);
         }
 
         [Authorize(Roles = "Admin")]
-        public IHttpActionResult Put(int id, ChemicalViewModel chemicalViewModel)
+        public IHttpActionResult Put(Service.ChemicalDTO chemicalDto)
         {
-            var found = this.chemicalService.GetChemicalByName(chemicalViewModel.Name);
-            if (found.ToList().Count == 0)
+            if (this.chemicalService.UpdateChemical(chemicalDto)) 
             {
-                chemicalViewModel.Id = id;
-                var chemical = this.chemicalService.GetChemicalById(id);
-                Mapper.Map(chemicalViewModel, chemical);
-                this.chemicalService.UpdateChemical(chemical);
-                return this.Ok(chemicalViewModel);
+                return this.Ok(chemicalDto);
             }
 
             return this.StatusCode(HttpStatusCode.Conflict);
@@ -89,10 +67,12 @@ namespace Gep13.Sample.Api.Controllers
         [Authorize(Roles = "Admin")]
         public IHttpActionResult Archive(int id)
         {
-            var chemical = this.chemicalService.GetChemicalById(id);
-            chemical.IsArchived = true;
-            this.chemicalService.UpdateChemical(chemical);
-            return this.Ok();
+            if (this.chemicalService.ArchiveChemical(id))
+            {
+                return this.Ok();
+            }
+
+            return this.StatusCode(HttpStatusCode.Conflict);
         }
     }
 }

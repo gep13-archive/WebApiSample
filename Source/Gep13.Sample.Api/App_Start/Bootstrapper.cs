@@ -36,10 +36,10 @@ namespace Gep13.Sample.Api.App_Start
 
         private static void ConfigureWebApiContainer(ContainerBuilder containerBuilder)
         {
-            containerBuilder.RegisterType<DatabaseFactory>().As<IDatabaseFactory>().AsImplementedInterfaces().InstancePerApiRequest();
-            containerBuilder.RegisterType<UnitOfWork>().As<IUnitOfWork>().AsImplementedInterfaces().InstancePerApiRequest();
-            containerBuilder.RegisterType<ChemicalService>().As<IChemicalService>().InstancePerApiRequest();
-            containerBuilder.RegisterType<ChemicalRepository>().As<IChemicalRepository>().InstancePerApiRequest();
+            containerBuilder.RegisterType<DatabaseFactory>().As<IDatabaseFactory>().AsImplementedInterfaces().InstancePerRequest();
+            containerBuilder.RegisterType<UnitOfWork>().As<IUnitOfWork>().AsImplementedInterfaces().InstancePerRequest();
+            containerBuilder.RegisterType<ChemicalService>().As<IChemicalService>().InstancePerRequest();
+            containerBuilder.RegisterType<ChemicalRepository>().As<IChemicalRepository>().InstancePerRequest();
             
             containerBuilder.RegisterApiControllers(Assembly.GetExecutingAssembly());
             var container = containerBuilder.Build();
