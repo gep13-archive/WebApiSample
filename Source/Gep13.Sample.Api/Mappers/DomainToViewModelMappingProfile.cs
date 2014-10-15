@@ -13,6 +13,7 @@ namespace Gep13.Sample.Api.Mappers
 
     using Gep13.Sample.Api.ViewModels;
     using Gep13.Sample.Model;
+    using Gep13.Sample.Service;
 
     public class DomainToViewModelMappingProfile : Profile
     {
@@ -26,7 +27,8 @@ namespace Gep13.Sample.Api.Mappers
 
         protected override void Configure()
         {
-            Mapper.CreateMap<Chemical, ChemicalViewModel>();
+            Mapper.CreateMap<ChemicalDTO, ChemicalViewModel>();
+            Mapper.CreateMap<Chemical, ChemicalDTO>();
         }
     }
 }
