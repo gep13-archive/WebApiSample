@@ -11,8 +11,6 @@ namespace Gep13.Sample.Service
 {
     using System.Collections.Generic;
 
-    using Gep13.Sample.Model;
-
     public interface IChemicalService
     {
         IEnumerable<ChemicalDTO> GetChemicals();
@@ -25,7 +23,7 @@ namespace Gep13.Sample.Service
 
         bool UpdateChemical(ChemicalDTO chemical);
 
-        void DeleteChemical(int chemicalId);
+        bool DeleteChemical(int id);
 
         bool ArchiveChemical(int id);
     }

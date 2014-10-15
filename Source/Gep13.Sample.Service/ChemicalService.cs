@@ -7,8 +7,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.ComponentModel.Design;
-
 namespace Gep13.Sample.Service
 {
     using System.Collections.Generic;
@@ -52,14 +50,17 @@ namespace Gep13.Sample.Service
             }
         }
 
-        public void DeleteChemical(int chemicalId)
+        public bool DeleteChemical(int id)
         {
-            var chemical = this.repository.GetById(chemicalId);
+            var chemical = this.repository.GetById(id);
             if (chemical != null)
             {
                 this.repository.Delete(chemical);
                 this.SaveChanges();
+                return true;
             }
+
+            return false;
         }
 
         public bool ArchiveChemical(int id)
@@ -70,7 +71,7 @@ namespace Gep13.Sample.Service
             {
                 found.IsArchived = true;
                 this.repository.Update(found);
-                this.unitOfWork.SaveChanges();
+                this.SaveChanges();
                 return true;
             }
 
