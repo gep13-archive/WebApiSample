@@ -21,7 +21,7 @@ namespace Gep13.Sample.Service
 
         IEnumerable<ChemicalDTO> GetChemicalByName(string name);
 
-        bool UpdateChemical(ChemicalDTO chemical);
+        bool UpdateChemical(ChemicalDTO chemicalDto);
 
         bool DeleteChemical(int id);
 

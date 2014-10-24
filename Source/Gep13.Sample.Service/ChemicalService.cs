@@ -94,13 +94,13 @@ namespace Gep13.Sample.Service
             return Mapper.Map<IEnumerable<Chemical>, IEnumerable<ChemicalDTO>>(chemicals);
         }
 
-        public bool UpdateChemical(ChemicalDTO chemical)
+        public bool UpdateChemical(ChemicalDTO chemicalDto)
         {
-            var found = this.GetByName(chemical.Name);
+            var found = this.GetById(chemicalDto.Id);
 
-            if (!found.Any())
+            if (found != null)
             {
-                var entity = Mapper.Map<ChemicalDTO, Chemical>(chemical);
+                var entity = Mapper.Map<ChemicalDTO, Chemical>(chemicalDto);
                 this.repository.Update(entity);
                 this.SaveChanges();
                 return true;
