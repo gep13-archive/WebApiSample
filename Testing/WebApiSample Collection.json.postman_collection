@@ -1,0 +1,167 @@
+{
+	"id": "b93364a4-d1c7-c976-4a33-7a7fb7cf3096",
+	"name": "WebApiSample Collection",
+	"description": "",
+	"order": [],
+	"folders": [
+		{
+			"id": "3616a5e2-97b6-2436-dcc3-c4fb7da86b94",
+			"name": "Chemicals",
+			"description": "",
+			"order": [
+				"444fe45e-aca9-8ab5-f1b9-0cc5bd0bb1ba",
+				"a0d11cdd-6794-5320-7c01-5a8ed4617900",
+				"1a610bf2-ac0d-cf41-be99-e0c22ca63391",
+				"62de4b40-5ed1-f92c-b81b-84b467895ee9",
+				"5a3ce2db-cb23-ec83-2b46-1178f289e9c7"
+			],
+			"collection_name": "WebApiSample Collection",
+			"collection_id": "b93364a4-d1c7-c976-4a33-7a7fb7cf3096"
+		}
+	],
+	"timestamp": 1414176237908,
+	"synced": false,
+	"requests": [
+		{
+			"id": "1a610bf2-ac0d-cf41-be99-e0c22ca63391",
+			"headers": "",
+			"url": "http://localhost:60929/api/Chemical/1",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "DELETE",
+			"data": [],
+			"dataMode": "params",
+			"name": "DeleteById",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1414176467203,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"collectionId": "b93364a4-d1c7-c976-4a33-7a7fb7cf3096",
+			"synced": false
+		},
+		{
+			"id": "444fe45e-aca9-8ab5-f1b9-0cc5bd0bb1ba",
+			"headers": "",
+			"url": "http://localhost:60929/api/Chemical",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"name": "GetChemicals",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1414176356143,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"collectionId": "b93364a4-d1c7-c976-4a33-7a7fb7cf3096",
+			"synced": false,
+			"isFromCollection": true,
+			"collectionRequestId": "113ab3fc-1b49-c7d8-a873-f04b08629e22"
+		},
+		{
+			"id": "5a3ce2db-cb23-ec83-2b46-1178f289e9c7",
+			"headers": "",
+			"url": "http://localhost:60929/api/Chemical",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "PUT",
+			"data": [
+				{
+					"key": "Id",
+					"value": "1",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "Name",
+					"value": "Poison",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "IsArchived",
+					"value": "False",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "Balance",
+					"value": "15",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"name": "UpdateChemical",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1414176614636,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"collectionId": "b93364a4-d1c7-c976-4a33-7a7fb7cf3096",
+			"synced": false
+		},
+		{
+			"id": "62de4b40-5ed1-f92c-b81b-84b467895ee9",
+			"headers": "",
+			"url": "http://localhost:60929/api/Chemical",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "POST",
+			"data": [
+				{
+					"key": "Name",
+					"value": "Arsenic",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "IsArchived",
+					"value": "False",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "Balance",
+					"value": "14",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"name": "AddChemical",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1414176561309,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"collectionId": "b93364a4-d1c7-c976-4a33-7a7fb7cf3096",
+			"synced": false
+		},
+		{
+			"id": "a0d11cdd-6794-5320-7c01-5a8ed4617900",
+			"headers": "",
+			"url": "http://localhost:60929/api/Chemical/1",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"name": "GetChemicalById",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1414176401010,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"collectionId": "b93364a4-d1c7-c976-4a33-7a7fb7cf3096",
+			"synced": false
+		}
+	]
+}
