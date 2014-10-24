@@ -39,7 +39,6 @@ namespace Gep13.Sample.Api.Controllers
             return this.Ok(chemicalViewModel);
         }
 
-        [Authorize(Roles = "Admin")]
         public IHttpActionResult Post(ChemicalViewModel chemicalViewModel) 
         {
             var item = this.chemicalService.AddChemical(chemicalViewModel.Name, chemicalViewModel.Balance);
@@ -52,7 +51,6 @@ namespace Gep13.Sample.Api.Controllers
             return this.Created(this.Url.Link("DefaultApi", new { controller = "Chemical", id = item.Id }), item);
         }
 
-        [Authorize(Roles = "Admin")]
         public IHttpActionResult Put(ChemicalViewModel chemicalViewModel)
         {
             if (this.chemicalService.UpdateChemical(Mapper.Map<ChemicalViewModel, ChemicalDTO>(chemicalViewModel))) 
@@ -64,7 +62,6 @@ namespace Gep13.Sample.Api.Controllers
         }
 
         [HttpDelete]
-        [Authorize(Roles = "Admin")]
         public IHttpActionResult Archive(int id)
         {
             if (this.chemicalService.ArchiveChemical(id))
