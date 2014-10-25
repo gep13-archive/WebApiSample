@@ -60,6 +60,7 @@
     </Compile>
     <Compile Include="ChemicalService.cs" />
     <Compile Include="ChemicalDTO.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IChemicalService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
