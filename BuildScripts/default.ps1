@@ -105,19 +105,19 @@ function analyseDupFinderResults( [Parameter(ValueFromPipeline=$true)]$dupFinder
   foreach ($duplicateCost in $dupFinderErrors.DuplicatesReport.Duplicates.Duplicate) {
     Write-Host "Duplicate Located with a cost of $($duplicateCost.Cost), across $($duplicateCost.Fragment.Count) Fragments";
 	
-	foreach ($fragment in $duplicateCost.Fragment) {
-	  Write-Host "File Name: $($fragment.FileName) Line Numbers: $($fragment.LineRange.Start) - $($fragment.LineRange.End)";
-	  Write-Host "Offending Text: $($fragment.Text)";
-	}
+    foreach ($fragment in $duplicateCost.Fragment) {
+      Write-Host "File Name: $($fragment.FileName) Line Numbers: $($fragment.LineRange.Start) - $($fragment.LineRange.End)";
+      Write-Host "Offending Text: $($fragment.Text)";
+    }
 
     if(isAppVeyor) {
-	  $anyFailures = $TRUE;
+      $anyFailures = $TRUE;
       Add-AppveyorTest "Duplicate Located with a cost of $($duplicateCost.Cost), across $($duplicateCost.Fragment.Count) Fragments" -Outcome Failed -ErrorMessage "See dupFinder.html in build artifacts for full details of duplicates";
     }
   }
   
   if(isAppVeyor) {
-	  Push-AppveyorArtifact $dupFinderResultsFile;
+    Push-AppveyorArtifact $dupFinderResultsFile;
   }
   
   if ($anyFailures -eq $TRUE){
@@ -400,10 +400,10 @@ Task -Name RunDupFinder -Depends __InstallReSharperCommandLineTools -Description
   exec {
     Invoke-Expression "$dupFinderExe /config=$dupFinderConfigFile";
 	
-	if(Test-Path $dupFinderXmlFile) {
-	  $dupFinderXmlFile | analyseDupFinderResults;
-	  applyXslTransform $dupFinderXmlFile $dupFinderXslFile $dupFinderHtmlFile;
-	}
+    if(Test-Path $dupFinderXmlFile) {
+      applyXslTransform $dupFinderXmlFile $dupFinderXslFile $dupFinderHtmlFile;
+      $dupFinderXmlFile | analyseDupFinderResults;
+    }
   }
 }
 
@@ -455,26 +455,26 @@ Task -Name BuildSolution -Depends __RemoveBuildArtifactsDirectory, __VerifyConfi
     exec { 
       Invoke-MSBuild "$sourceDirectory\Gep13.Sample.sln" -NoLogo -Configuration $config -Targets Build -DetailedSummary -VisualStudioVersion 12.0 -Properties (@{'Platform'='Any CPU';'RunOctoPack'='true';'OctoPackPackageVersion'=$script:version;'OctoPackPublishPackageToFileShare'=$buildArtifactsDirectory})
       
-	  if(isAppVeyor) {
-		Get-ChildItem -Path $buildArtifactsDirectory -Filter *.nupkg | ForEach-Object -Process {
-		  Push-AppveyorArtifact ($buildArtifactsDirectory | Join-Path -ChildPath $_.Name);
-		}
-	  }
-	  
+      if(isAppVeyor) {
+        Get-ChildItem -Path $buildArtifactsDirectory -Filter *.nupkg | ForEach-Object -Process {
+          Push-AppveyorArtifact ($buildArtifactsDirectory | Join-Path -ChildPath $_.Name);
+        }
+      }
+      
       $styleCopResultsFiles = Get-ChildItem $buildArtifactsDirectory -Filter "StyleCop*.xml"
       foreach ($styleCopResultsFile in $styleCopResultsFiles) {
         $reportXmlFile = Join-Path -Path $buildArtifactsDirectory -ChildPath $styleCopResultsFile | Resolve-Path;
         $reportHtmlFile = $reportXmlFile -replace ".xml", ".html";
         applyXslTransform $reportXmlFile $styleCopXslFile $reportHtmlFile;
-		Join-Path -Path $buildArtifactsDirectory -ChildPath $styleCopResultsFile | analyseStyleCopResults;
+        Join-Path -Path $buildArtifactsDirectory -ChildPath $styleCopResultsFile | analyseStyleCopResults;
       }
-            
+              
       $codeAnalysisFiles = Get-ChildItem $buildArtifactsDirectory -Filter "CodeAnalysis*.xml"
       foreach ($codeAnalysisFile in $codeAnalysisFiles) {
         $reportXmlFile = Join-Path -Path $buildArtifactsDirectory -ChildPath $codeAnalysisFile | Resolve-Path;
         $reportHtmlFile = $reportXmlFile -replace ".xml", ".html";
         applyXslTransform $reportXmlFile $codeAnalysisXslFile $reportHtmlFile;
-		Join-Path -Path $buildArtifactsDirectory -ChildPath $codeAnalysisFile | analyseCodeAnalysisResults;
+        Join-Path -Path $buildArtifactsDirectory -ChildPath $codeAnalysisFile | analyseCodeAnalysisResults;
       }
     }
 
