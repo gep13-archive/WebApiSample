@@ -29,8 +29,8 @@ namespace Gep13.Sample.Service.Test
         [TestFixtureSetUp]
         public void TestFixtureSetup()
         {
-            Mapper.CreateMap<ChemicalDTO, Chemical>();
-            Mapper.CreateMap<Chemical, ChemicalDTO>();
+            Mapper.CreateMap<ChemicalDto, Chemical>();
+            Mapper.CreateMap<Chemical, ChemicalDto>();
         }
 
         [Test]
@@ -40,7 +40,7 @@ namespace Gep13.Sample.Service.Test
             var fakeUnitOfWork = Substitute.For<IUnitOfWork>();
             var chemicalService = new ChemicalService(fakeRepository, fakeUnitOfWork);
 
-            var toUpdate = new Service.ChemicalDTO
+            var toUpdate = new Service.ChemicalDto
             {
                 Id = 1,
                 Balance = 110.99,

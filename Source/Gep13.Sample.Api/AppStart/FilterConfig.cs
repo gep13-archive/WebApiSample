@@ -9,12 +9,18 @@
 
 namespace Gep13.Sample.Api
 {
+    using System;
     using System.Web.Mvc;
 
-    public class FilterConfig
+    public static class FilterConfig
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
+            if (filters == null)
+            {
+                throw new ArgumentNullException("filters");
+            }
+
             filters.Add(new HandleErrorAttribute());
         }
     }

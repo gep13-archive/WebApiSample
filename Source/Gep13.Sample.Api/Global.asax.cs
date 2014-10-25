@@ -12,11 +12,11 @@ namespace Gep13.Sample.Api
     using System.Web.Http;
     using System.Web.Mvc;
 
-    using Gep13.Sample.Api.App_Start;
+    using Gep13.Sample.Api.AppStart;
 
     public class WebApiApplication : System.Web.HttpApplication
     {
-        protected void Application_Start()
+        protected static void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
             Bootstrapper.Configure();

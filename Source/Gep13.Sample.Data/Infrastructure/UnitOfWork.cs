@@ -23,7 +23,7 @@ namespace Gep13.Sample.Data.Infrastructure
         {
             get
             {
-                return this.gep13Context ?? this.databaseFactory.Get();
+                return this.gep13Context ?? this.databaseFactory.GetContext();
             }
         }
 

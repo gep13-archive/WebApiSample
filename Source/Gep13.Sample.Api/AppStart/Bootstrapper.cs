@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Gep13.Sample.Api.App_Start
+namespace Gep13.Sample.Api.AppStart
 {
     using System.Reflection;
     using System.Web.Http;

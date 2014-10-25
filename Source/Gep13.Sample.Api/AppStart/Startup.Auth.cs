@@ -25,8 +25,10 @@ namespace Gep13.Sample.Api
     /// <summary>
     /// Startup Class used to initiate the startup of the Web API
     /// </summary>
-    public partial class Startup
+    public static partial class Startup
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = "Need to think about this one")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Handled by IoC Container")]
         static Startup()
         {
             PublicClientId = "self";
@@ -50,7 +52,7 @@ namespace Gep13.Sample.Api
         private static Func<UserManager<IdentityUser>> UserManagerFactory { get; set; }
 
         // For more information on configuring authentication, please visit http://go.microsoft.com/fwlink/?LinkId=301864
-        private void ConfigureAuth(IAppBuilder app)
+        private static void ConfigureAuth(IAppBuilder app)
         {
             app.UseCors(CorsOptions.AllowAll);
 

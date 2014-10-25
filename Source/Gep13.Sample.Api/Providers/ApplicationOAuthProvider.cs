@@ -64,6 +64,11 @@ namespace Gep13.Sample.Api.Providers
 
         public override Task TokenEndpoint(OAuthTokenEndpointContext context)
         {
+            if (context == null)
+            {
+                throw new ArgumentNullException("context");
+            }
+
             foreach (var property in context.Properties.Dictionary)
             {
                 context.AdditionalResponseParameters.Add(property.Key, property.Value);
@@ -74,6 +79,11 @@ namespace Gep13.Sample.Api.Providers
 
         public override Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
+            if (context == null)
+            {
+                throw new ArgumentNullException("context");
+            }
+
             // Resource owner password credentials does not provide a client ID.
             if (context.ClientId == null)
             {
@@ -85,12 +95,17 @@ namespace Gep13.Sample.Api.Providers
 
         public override Task ValidateClientRedirectUri(OAuthValidateClientRedirectUriContext context)
         {
+            if (context == null)
+            {
+                throw new ArgumentNullException("context");
+            }
+
             if (context.ClientId != this.publicClientId)
             {
                 return Task.FromResult<object>(null);
             }
 
-            var expectedRootUri = new Uri(context.Request.Uri, "/");
+            var expectedRootUri = new Uri(context.Request.Uri, new Uri("/"));
 
             if (expectedRootUri.AbsoluteUri == context.RedirectUri)
             {

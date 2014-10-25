@@ -13,7 +13,7 @@ namespace Gep13.Sample.Data.Infrastructure
     {
         private Gep13Context dataContext;
 
-        public Gep13Context Get()
+        public Gep13Context GetContext()
         {
             return this.dataContext ?? (this.dataContext = new Gep13Context());
         }

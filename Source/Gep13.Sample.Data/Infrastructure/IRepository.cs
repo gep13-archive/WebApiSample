@@ -17,6 +17,7 @@ namespace Gep13.Sample.Data.Infrastructure
     {
         T GetById(int id);
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Not applicable")]
         IEnumerable<T> GetAll();
 
         IEnumerable<T> GetMany(Expression<Func<T, bool>> where);
