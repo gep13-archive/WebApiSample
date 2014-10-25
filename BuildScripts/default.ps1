@@ -110,8 +110,9 @@ function analyseDupFinderResults( [Parameter(ValueFromPipeline=$true)]$dupFinder
       Write-Host "Offending Text: $($fragment.Text)";
     }
 
+    $anyFailures = $TRUE;
+
     if(isAppVeyor) {
-      $anyFailures = $TRUE;
       Add-AppveyorTest "Duplicate Located with a cost of $($duplicateCost.Cost), across $($duplicateCost.Fragment.Count) Fragments" -Outcome Failed -ErrorMessage "See dupFinder.html in build artifacts for full details of duplicates";
     }
   }
