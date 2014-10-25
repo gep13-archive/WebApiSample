@@ -21,6 +21,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gep13.Sample.Api.Integratio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gep13.Sample.Common", "Gep13.Sample.Common\Gep13.Sample.Common.csproj", "{9A5F116B-8C1E-4260-BB62-EF19BD409C74}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildScripts", "BuildScripts", "{4554EF85-C61A-416C-8E32-D88B2F4A3EF7}"
+	ProjectSection(SolutionItems) = preProject
+		..\BuildScripts\build.ps1 = ..\BuildScripts\build.ps1
+		..\BuildScripts\CodeAnalysis.props = ..\BuildScripts\CodeAnalysis.props
+		..\BuildScripts\CodeAnalysisReport.xsl = ..\BuildScripts\CodeAnalysisReport.xsl
+		..\BuildScripts\default.ps1 = ..\BuildScripts\default.ps1
+		..\BuildScripts\dupfinder.config = ..\BuildScripts\dupfinder.config
+		..\BuildScripts\dupfinder.xsl = ..\BuildScripts\dupfinder.xsl
+		..\BuildScripts\inspectcode.config = ..\BuildScripts\inspectcode.config
+		..\BuildScripts\StyleCop.props = ..\BuildScripts\StyleCop.props
+		..\BuildScripts\StyleCopReport.xsl = ..\BuildScripts\StyleCopReport.xsl
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
