@@ -459,16 +459,16 @@ Task -Name BuildSolution -Depends __RemoveBuildArtifactsDirectory, __VerifyConfi
       foreach ($styleCopResultsFile in $styleCopResultsFiles) {
         $reportXmlFile = Join-Path -Path $buildArtifactsDirectory -ChildPath $styleCopResultsFile | Resolve-Path;
         $reportHtmlFile = $reportXmlFile -replace ".xml", ".html";
-        Join-Path -Path $buildArtifactsDirectory -ChildPath $styleCopResultsFile | analyseStyleCopResults;
         applyXslTransform $reportXmlFile $styleCopXslFile $reportHtmlFile;
+		Join-Path -Path $buildArtifactsDirectory -ChildPath $styleCopResultsFile | analyseStyleCopResults;
       }
             
       $codeAnalysisFiles = Get-ChildItem $buildArtifactsDirectory -Filter "CodeAnalysis*.xml"
       foreach ($codeAnalysisFile in $codeAnalysisFiles) {
         $reportXmlFile = Join-Path -Path $buildArtifactsDirectory -ChildPath $codeAnalysisFile | Resolve-Path;
         $reportHtmlFile = $reportXmlFile -replace ".xml", ".html";
-        Join-Path -Path $buildArtifactsDirectory -ChildPath $codeAnalysisFile | analyseCodeAnalysisResults;
         applyXslTransform $reportXmlFile $codeAnalysisXslFile $reportHtmlFile;
+		Join-Path -Path $buildArtifactsDirectory -ChildPath $codeAnalysisFile | analyseCodeAnalysisResults;
       }
     }
 
