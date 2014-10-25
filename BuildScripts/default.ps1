@@ -454,7 +454,13 @@ Task -Name BuildSolution -Depends __RemoveBuildArtifactsDirectory, __VerifyConfi
 
     exec { 
       Invoke-MSBuild "$sourceDirectory\Gep13.Sample.sln" -NoLogo -Configuration $config -Targets Build -DetailedSummary -VisualStudioVersion 12.0 -Properties (@{'Platform'='Any CPU';'RunOctoPack'='true';'OctoPackPackageVersion'=$script:version;'OctoPackPublishPackageToFileShare'=$buildArtifactsDirectory})
-            
+      
+	  if(isAppVeyor) {
+		Get-ChildItem -Path $buildArtifactsDirectory -Filter *.nupkg | ForEach-Object -Process {
+		  Push-AppveyorArtifact ($buildArtifactsDirectory | Join-Path -ChildPath $_.Name);
+		}
+	  }
+	  
       $styleCopResultsFiles = Get-ChildItem $buildArtifactsDirectory -Filter "StyleCop*.xml"
       foreach ($styleCopResultsFile in $styleCopResultsFiles) {
         $reportXmlFile = Join-Path -Path $buildArtifactsDirectory -ChildPath $styleCopResultsFile | Resolve-Path;
