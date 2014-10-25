@@ -453,7 +453,7 @@ Task -Name BuildSolution -Depends __RemoveBuildArtifactsDirectory, __VerifyConfi
     Write-Output "Running BuildSolution..."
 
     exec { 
-      Invoke-MSBuild "$sourceDirectory\Gep13.Sample.sln" -NoLogo -Configuration $config -Targets Build -DetailedSummary -VisualStudioVersion 12.0 -Properties (@{'Platform'='Any CPU'})
+      Invoke-MSBuild "$sourceDirectory\Gep13.Sample.sln" -NoLogo -Configuration $config -Targets Build -DetailedSummary -VisualStudioVersion 12.0 -Properties (@{'Platform'='Any CPU';'RunOctoPack'='true';'OctoPackPackageVersion'=$script:version;'OctoPackPublishPackageToFileShare'=$buildArtifactsDirectory})
             
       $styleCopResultsFiles = Get-ChildItem $buildArtifactsDirectory -Filter "StyleCop*.xml"
       foreach ($styleCopResultsFile in $styleCopResultsFiles) {
@@ -486,7 +486,8 @@ Task -Name RebuildSolution -Depends CleanSolution, __CreateBuildArtifactsDirecto
 
 Task -Name CleanSolution -Depends __InstallPSBuild, __RemoveBuildArtifactsDirectory, __VerifyConfiguration -Description "Deletes all build artifacts" -Action {
   $sourceDirectory = get-sourceDirectory;
-        
+  $buildArtifactsDirectory = get-buildArtifactsDirectory;
+		
   try {
     Write-Output "Running CleanSolution..."
 
