@@ -122,7 +122,7 @@ function analyseDupFinderResults( [Parameter(ValueFromPipeline=$true)]$dupFinder
   
   if ($anyFailures -eq $TRUE){
     Write-Host "Failing build as there are duplicates in the Code Base";
-    $host.SetShouldExit(1);
+    throw "Duplicates found in code base"
   }
 }
 
