@@ -1,0 +1,25 @@
+<Dictionary>
+  <Words>
+    <Unrecognized>
+      <Word />
+    </Unrecognized>
+    <Recognized>
+      <Word>Gep</Word>
+      <Word>Api</Word>
+      <Word>Auth</Word>
+      <Word>Dto</Word>
+      <Word>Autofac</Word>
+    </Recognized>
+    <Deprecated>
+      <Term />
+    </Deprecated>
+    <DiscreteExceptions>
+      <Term />
+    </DiscreteExceptions>
+  </Words>
+  <Acronyms>
+    <CasingExceptions>
+      <Acronym />
+    </CasingExceptions>
+  </Acronyms>
+</Dictionary>

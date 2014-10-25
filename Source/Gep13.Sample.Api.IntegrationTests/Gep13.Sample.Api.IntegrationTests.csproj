@@ -90,6 +90,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.2\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Http, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.2\lib\net45\System.Web.Http.dll</HintPath>
@@ -104,9 +105,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="When_getting_chemicals.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SimpleControllerTests.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -119,6 +122,10 @@
     <ProjectReference Include="..\Gep13.Sample.Api\Gep13.Sample.Api.csproj">
       <Project>{12adab22-983d-4b16-870b-9b57c8389e56}</Project>
       <Name>Gep13.Sample.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Gep13.Sample.Common\Gep13.Sample.Common.csproj">
+      <Project>{9a5f116b-8c1e-4260-bb62-ef19bd409c74}</Project>
+      <Name>Gep13.Sample.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Gep13.Sample.Data\Gep13.Sample.Data.csproj">
       <Project>{21a8b9b8-4fe9-41bb-a1a7-cf4774f25c6e}</Project>

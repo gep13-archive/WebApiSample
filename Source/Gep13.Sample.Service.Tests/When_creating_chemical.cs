@@ -40,8 +40,8 @@ namespace Gep13.Sample.Service.Test
             _fakeUnitOfWork = Substitute.For<IUnitOfWork>();
             _chemicalService = new ChemicalService(_fakeRepository, _fakeUnitOfWork);
             
-            Mapper.CreateMap<ChemicalDTO, Chemical>();
-            Mapper.CreateMap<Chemical, ChemicalDTO>();
+            Mapper.CreateMap<ChemicalDto, Chemical>();
+            Mapper.CreateMap<Chemical, ChemicalDto>();
         }
 
         [Test]

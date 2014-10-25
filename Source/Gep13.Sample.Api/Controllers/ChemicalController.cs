@@ -9,6 +9,7 @@
 
 namespace Gep13.Sample.Api.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Net;
     using System.Web.Http;
@@ -29,19 +30,24 @@ namespace Gep13.Sample.Api.Controllers
 
         public IHttpActionResult Get()
         {
-            var chemicalViewModels = Mapper.Map<IEnumerable<ChemicalDTO>, IEnumerable<ChemicalViewModel>>(this.chemicalService.GetChemicals());
+            var chemicalViewModels = Mapper.Map<IEnumerable<ChemicalDto>, IEnumerable<ChemicalViewModel>>(this.chemicalService.GetChemicals());
             return this.Ok(chemicalViewModels);
         }
 
         public IHttpActionResult Get(int id)
         {
-            var chemicalViewModel = Mapper.Map<ChemicalDTO, ChemicalViewModel>(this.chemicalService.GetChemicalById(id));
+            var chemicalViewModel = Mapper.Map<ChemicalDto, ChemicalViewModel>(this.chemicalService.GetChemicalById(id));
             return this.Ok(chemicalViewModel);
         }
 
         [Authorize(Roles = "Admin")]
         public IHttpActionResult Post(ChemicalViewModel chemicalViewModel) 
         {
+            if (chemicalViewModel == null)
+            {
+                throw new ArgumentNullException("chemicalViewModel");
+            }
+
             var item = this.chemicalService.AddChemical(chemicalViewModel.Name, chemicalViewModel.Balance);
 
             if (item == null) 
@@ -55,7 +61,7 @@ namespace Gep13.Sample.Api.Controllers
         [Authorize(Roles = "Admin")]
         public IHttpActionResult Put(ChemicalViewModel chemicalViewModel)
         {
-            if (this.chemicalService.UpdateChemical(Mapper.Map<ChemicalViewModel, ChemicalDTO>(chemicalViewModel))) 
+            if (this.chemicalService.UpdateChemical(Mapper.Map<ChemicalViewModel, ChemicalDto>(chemicalViewModel))) 
             {
                 return this.Ok(chemicalViewModel);
             }

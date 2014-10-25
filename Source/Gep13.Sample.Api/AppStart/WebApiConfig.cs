@@ -9,6 +9,7 @@
 
 namespace Gep13.Sample.Api
 {
+    using System;
     using System.Web.Http;
 
     using Microsoft.Owin.Security.OAuth;
@@ -17,6 +18,11 @@ namespace Gep13.Sample.Api
     {
         public static void Register(HttpConfiguration config)
         {
+            if (config == null)
+            {
+                throw new ArgumentNullException("config");
+            }
+
             config.EnableCors();
 
             // Web API configuration and services

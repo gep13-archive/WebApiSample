@@ -27,8 +27,8 @@ namespace Gep13.Sample.Api.Mappers
 
         protected override void Configure()
         {
-            Mapper.CreateMap<ChemicalViewModel, ChemicalDTO>();
-            Mapper.CreateMap<ChemicalDTO, Chemical>();
+            Mapper.CreateMap<ChemicalViewModel, ChemicalDto>();
+            Mapper.CreateMap<ChemicalDto, Chemical>();
         }
     }
 }

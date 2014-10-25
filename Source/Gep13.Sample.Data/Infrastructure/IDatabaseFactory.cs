@@ -13,6 +13,7 @@ namespace Gep13.Sample.Data.Infrastructure
 
     public interface IDatabaseFactory : IDisposable
     {
-        Gep13Context Get();
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Not applicable")]
+        Gep13Context GetContext();
     }
 }

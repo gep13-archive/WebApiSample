@@ -27,6 +27,11 @@ namespace Gep13.Sample.Api.Controllers
 
         public AccountController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
+            if (userManager == null)
+            {
+                throw new ArgumentNullException("userManager");
+            }
+
             this.userManager = userManager;
             this.roleManager = roleManager;
 

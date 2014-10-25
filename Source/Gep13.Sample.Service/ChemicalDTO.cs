@@ -1,15 +1,15 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ChemicalDTO.cs" company="Gary Ewan Park">
+// <copyright file="ChemicalDto.cs" company="Gary Ewan Park">
 //   Copyright (c) Gary Ewan Park, 2014, All rights reserved.
 // </copyright>
 // <summary>
-//   Defines the ChemicalDTO type.
+//   Defines the ChemicalDto type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Gep13.Sample.Service
 {
-    public class ChemicalDTO
+    public class ChemicalDto
     {
         public int Id { get; set; }
 

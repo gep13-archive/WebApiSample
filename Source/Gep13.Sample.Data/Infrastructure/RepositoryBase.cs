@@ -47,7 +47,7 @@ namespace Gep13.Sample.Data.Infrastructure
 
         private Gep13Context DataContext
         {
-            get { return this.gep13Context ?? (this.gep13Context = this.DatabaseFactory.Get()); }
+            get { return this.gep13Context ?? (this.gep13Context = this.DatabaseFactory.GetContext()); }
         }
 
         public virtual T Add(T entity)
@@ -61,6 +61,7 @@ namespace Gep13.Sample.Data.Infrastructure
             this.dbset.Remove(entity);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Not applicable")]
         public virtual IEnumerable<T> GetAll()
         {
             return this.dbset.ToList();

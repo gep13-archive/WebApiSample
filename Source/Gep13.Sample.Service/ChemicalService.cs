@@ -9,6 +9,7 @@
 
 namespace Gep13.Sample.Service
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -29,7 +30,8 @@ namespace Gep13.Sample.Service
             this.unitOfWork = unitOfWork;
         }
 
-        public ChemicalDTO AddChemical(string name, double balance)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "This needs to be looked at")]
+        public ChemicalDto AddChemical(string name, double balance)
         {
             if (this.GetByName(name).Any())
             {
@@ -42,7 +44,7 @@ namespace Gep13.Sample.Service
             {
                 this.repository.Add(entity);
                 this.SaveChanges();
-                return Mapper.Map<Chemical, ChemicalDTO>(entity);
+                return Mapper.Map<Chemical, ChemicalDto>(entity);
             }
             catch
             {
@@ -78,29 +80,34 @@ namespace Gep13.Sample.Service
             return false;
         }
 
-        public ChemicalDTO GetChemicalById(int id)
+        public ChemicalDto GetChemicalById(int id)
         {
-            return Mapper.Map<Chemical, ChemicalDTO>(this.GetById(id));
+            return Mapper.Map<Chemical, ChemicalDto>(this.GetById(id));
         }
 
-        public IEnumerable<ChemicalDTO> GetChemicalByName(string name)
+        public IEnumerable<ChemicalDto> GetChemicalByName(string name)
         {
-            return Mapper.Map<IEnumerable<Chemical>, IEnumerable<ChemicalDTO>>(this.GetByName(name));
+            return Mapper.Map<IEnumerable<Chemical>, IEnumerable<ChemicalDto>>(this.GetByName(name));
         }
 
-        public IEnumerable<ChemicalDTO> GetChemicals()
+        public IEnumerable<ChemicalDto> GetChemicals()
         {
             var chemicals = this.repository.GetAll();
-            return Mapper.Map<IEnumerable<Chemical>, IEnumerable<ChemicalDTO>>(chemicals);
+            return Mapper.Map<IEnumerable<Chemical>, IEnumerable<ChemicalDto>>(chemicals);
         }
 
-        public bool UpdateChemical(ChemicalDTO chemical)
+        public bool UpdateChemical(ChemicalDto chemical)
         {
+            if (chemical == null)
+            {
+                throw new ArgumentNullException("chemical");
+            }
+
             var found = this.GetByName(chemical.Name);
 
             if (!found.Any())
             {
-                var entity = Mapper.Map<ChemicalDTO, Chemical>(chemical);
+                var entity = Mapper.Map<ChemicalDto, Chemical>(chemical);
                 this.repository.Update(entity);
                 this.SaveChanges();
                 return true;

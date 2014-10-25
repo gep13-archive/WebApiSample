@@ -33,7 +33,7 @@ namespace Gep13.Sample.Service.Test
         [TestFixtureSetUp]
         public void TestFixtureSetup()
         {
-            Mapper.CreateMap<Chemical, ChemicalDTO>();
+            Mapper.CreateMap<Chemical, ChemicalDto>();
         }
 
         [SetUp]
