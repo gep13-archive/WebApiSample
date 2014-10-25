@@ -4,7 +4,7 @@
   <PropertyGroup>
     <StyleCopOutputFile>..\..\BuildArtifacts\StyleCopReport-Gep13.Sample.Api.xml</StyleCopOutputFile>
     <StyleCopForceFullAnalysis>true</StyleCopForceFullAnalysis>
-  </PropertyGroup>  
+  </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -247,6 +247,10 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Gep13.Sample.Common\Gep13.Sample.Common.csproj">
+      <Project>{9A5F116B-8C1E-4260-BB62-EF19BD409C74}</Project>
+      <Name>Gep13.Sample.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Gep13.Sample.Data\Gep13.Sample.Data.csproj">
       <Project>{21A8B9B8-4FE9-41BB-A1A7-CF4774F25C6E}</Project>
       <Name>Gep13.Sample.Data</Name>

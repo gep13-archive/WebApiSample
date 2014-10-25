@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gep13.Sample.Service.Tests"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gep13.Sample.Api.IntegrationTests", "Gep13.Sample.Api.IntegrationTests\Gep13.Sample.Api.IntegrationTests.csproj", "{9F2D8AC8-A40D-49F8-978B-74235DE4FD98}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gep13.Sample.Common", "Gep13.Sample.Common\Gep13.Sample.Common.csproj", "{9A5F116B-8C1E-4260-BB62-EF19BD409C74}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{9F2D8AC8-A40D-49F8-978B-74235DE4FD98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F2D8AC8-A40D-49F8-978B-74235DE4FD98}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F2D8AC8-A40D-49F8-978B-74235DE4FD98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A5F116B-8C1E-4260-BB62-EF19BD409C74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A5F116B-8C1E-4260-BB62-EF19BD409C74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A5F116B-8C1E-4260-BB62-EF19BD409C74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A5F116B-8C1E-4260-BB62-EF19BD409C74}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -8,6 +8,7 @@
       <Word>Api</Word>
       <Word>Auth</Word>
       <Word>Dto</Word>
+      <Word>Autofac</Word>
     </Recognized>
     <Deprecated>
       <Term />

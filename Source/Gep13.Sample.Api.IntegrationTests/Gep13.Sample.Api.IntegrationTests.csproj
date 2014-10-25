@@ -123,6 +123,10 @@
       <Project>{12adab22-983d-4b16-870b-9b57c8389e56}</Project>
       <Name>Gep13.Sample.Api</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Gep13.Sample.Common\Gep13.Sample.Common.csproj">
+      <Project>{9a5f116b-8c1e-4260-bb62-ef19bd409c74}</Project>
+      <Name>Gep13.Sample.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Gep13.Sample.Data\Gep13.Sample.Data.csproj">
       <Project>{21a8b9b8-4fe9-41bb-a1a7-cf4774f25c6e}</Project>
       <Name>Gep13.Sample.Data</Name>
