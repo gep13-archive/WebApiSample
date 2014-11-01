@@ -17,12 +17,12 @@ namespace Gep13.Sample.Data.Infrastructure
 
         ~Disposable()
         {
-            this.Dispose(false);
+            Dispose(false);
         }
 
         public void Dispose()
         {
-            this.Dispose(true);
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
 
@@ -32,12 +32,12 @@ namespace Gep13.Sample.Data.Infrastructure
 
         private void Dispose(bool disposing)
         {
-            if (!this.isDisposed && disposing)
+            if (!isDisposed && disposing)
             {
-                this.DisposeCore();
+                DisposeCore();
             }
 
-            this.isDisposed = true;
+            isDisposed = true;
         }
     }
 }

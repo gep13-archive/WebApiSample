@@ -16,20 +16,20 @@ namespace Gep13.Sample.Data.Infrastructure
 
         public UnitOfWork(IDatabaseFactory databaseFactory)
         {
-            this.databaseFactory = databaseFactory;
+            databaseFactory = databaseFactory;
         }
 
         private Gep13Context DbContext
         {
             get
             {
-                return this.gep13Context ?? this.databaseFactory.GetContext();
+                return gep13Context ?? databaseFactory.GetContext();
             }
         }
 
         public void SaveChanges()
         {
-            this.DbContext.SaveChanges();
+            DbContext.SaveChanges();
         }
     }
 }

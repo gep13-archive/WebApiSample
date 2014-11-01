@@ -32,11 +32,11 @@ namespace Gep13.Sample.Api.Controllers
                 throw new ArgumentNullException("userManager");
             }
 
-            this.userManager = userManager;
-            this.roleManager = roleManager;
+            userManager = userManager;
+            roleManager = roleManager;
 
             ////TODO: This needs to be moved from here.
-            this.userManager.UserValidator = new UserValidator<IdentityUser>(userManager)
+            userManager.UserValidator = new UserValidator<IdentityUser>(userManager)
             {
                 AllowOnlyAlphanumericUserNames = false
             };
@@ -46,48 +46,48 @@ namespace Gep13.Sample.Api.Controllers
         [OverrideAuthorization]
         public async Task<IHttpActionResult> Post(RegisterViewModel viewModel)
         {
-            if (this.ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 try
                 {
                     var user = new IdentityUser();
                     Mapper.Map(viewModel, user);
 
-                    if (!this.roleManager.RoleExists("Member"))
+                    if (!roleManager.RoleExists("Member"))
                     {
-                        var roleResult = await this.roleManager.CreateAsync(new IdentityRole("Member"));
+                        var roleResult = await roleManager.CreateAsync(new IdentityRole("Member"));
                         if (!roleResult.Succeeded)
                         {
                             foreach (var error in roleResult.Errors)
                             {
-                                this.ModelState.AddModelError(error, error);
+                                ModelState.AddModelError(error, error);
                             }
 
-                            return this.BadRequest(this.ModelState);
+                            return BadRequest(ModelState);
                         }
                     }
 
-                    var identityResult = await this.userManager.CreateAsync(user, viewModel.Password);
+                    var identityResult = await userManager.CreateAsync(user, viewModel.Password);
                     if (identityResult.Succeeded)
                     {
-                        this.userManager.AddToRole(user.Id, "Member");
-                        return this.Ok();
+                        userManager.AddToRole(user.Id, "Member");
+                        return Ok();
                     }
 
                     foreach (var error in identityResult.Errors)
                     {
-                        this.ModelState.AddModelError(error, error);
+                        ModelState.AddModelError(error, error);
                     }
 
-                    return this.BadRequest(this.ModelState);
+                    return BadRequest(ModelState);
                 }
                 catch (Exception ex)
                 {
-                    this.ModelState.AddModelError("Exception", ex.Message);
+                    ModelState.AddModelError("Exception", ex.Message);
                 }
             }
 
-            return this.BadRequest(this.ModelState);
+            return BadRequest(ModelState);
         }
     }
 }

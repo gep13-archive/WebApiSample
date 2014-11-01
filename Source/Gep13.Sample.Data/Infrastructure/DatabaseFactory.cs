@@ -15,14 +15,14 @@ namespace Gep13.Sample.Data.Infrastructure
 
         public Gep13Context GetContext()
         {
-            return this.dataContext ?? (this.dataContext = new Gep13Context());
+            return dataContext ?? (dataContext = new Gep13Context());
         }
 
         protected override void DisposeCore()
         {
-            if (this.dataContext != null)
+            if (dataContext != null)
             {
-                this.dataContext.Dispose();
+                dataContext.Dispose();
             }
         }
     }

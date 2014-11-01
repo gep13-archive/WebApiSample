@@ -29,26 +29,26 @@ namespace Gep13.Sample.Api.IntegrationTests
         public void FixtureInit()
         {
             SetupAutoMapper();
-            this.testServer = TestServer.Create<Startup>();
+            testServer = TestServer.Create<Startup>();
         }
 
         [TestFixtureTearDown]
         public void FixtureDispose()
         {
-            this.testServer.Dispose();
+            testServer.Dispose();
         }
 
         [Test]
         public void Should_get_statuscodeok_response()
         {
-            var response = this.testServer.HttpClient.GetAsync("/api/Chemical").Result;
+            var response = testServer.HttpClient.GetAsync("/api/Chemical").Result;
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
         [Test]
         public void Should_get_json_response()
         {
-            var response = this.testServer.HttpClient.GetAsync("/api/Chemical").Result;
+            var response = testServer.HttpClient.GetAsync("/api/Chemical").Result;
             Assert.AreEqual("application/json", response.Content.Headers.ContentType.MediaType);
         }
         private static void SetupAutoMapper()
