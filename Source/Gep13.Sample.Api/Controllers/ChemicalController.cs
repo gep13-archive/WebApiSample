@@ -25,19 +25,19 @@ namespace Gep13.Sample.Api.Controllers
 
         public ChemicalController(IChemicalService chemicalService)
         {
-            this.chemicalService = chemicalService;
+            chemicalService = chemicalService;
         }
 
         public IHttpActionResult Get()
         {
-            var chemicalViewModels = Mapper.Map<IEnumerable<ChemicalDto>, IEnumerable<ChemicalViewModel>>(this.chemicalService.GetChemicals());
-            return this.Ok(chemicalViewModels);
+            var chemicalViewModels = Mapper.Map<IEnumerable<ChemicalDto>, IEnumerable<ChemicalViewModel>>(chemicalService.GetChemicals());
+            return Ok(chemicalViewModels);
         }
 
         public IHttpActionResult Get(int id)
         {
-            var chemicalViewModel = Mapper.Map<ChemicalDto, ChemicalViewModel>(this.chemicalService.GetChemicalById(id));
-            return this.Ok(chemicalViewModel);
+            var chemicalViewModel = Mapper.Map<ChemicalDto, ChemicalViewModel>(chemicalService.GetChemicalById(id));
+            return Ok(chemicalViewModel);
         }
 
         [Authorize(Roles = "Admin")]
@@ -48,37 +48,37 @@ namespace Gep13.Sample.Api.Controllers
                 throw new ArgumentNullException("chemicalViewModel");
             }
 
-            var item = this.chemicalService.AddChemical(chemicalViewModel.Name, chemicalViewModel.Balance);
+            var item = chemicalService.AddChemical(chemicalViewModel.Name, chemicalViewModel.Balance);
 
             if (item == null) 
             {
-                return this.StatusCode(HttpStatusCode.Conflict);
+                return StatusCode(HttpStatusCode.Conflict);
             }
 
-            return this.Created(this.Url.Link("DefaultApi", new { controller = "Chemical", id = item.Id }), item);
+            return Created(Url.Link("DefaultApi", new { controller = "Chemical", id = item.Id }), item);
         }
 
         [Authorize(Roles = "Admin")]
         public IHttpActionResult Put(ChemicalViewModel chemicalViewModel)
         {
-            if (this.chemicalService.UpdateChemical(Mapper.Map<ChemicalViewModel, ChemicalDto>(chemicalViewModel))) 
+            if (chemicalService.UpdateChemical(Mapper.Map<ChemicalViewModel, ChemicalDto>(chemicalViewModel))) 
             {
-                return this.Ok(chemicalViewModel);
+                return Ok(chemicalViewModel);
             }
 
-            return this.StatusCode(HttpStatusCode.Conflict);
+            return StatusCode(HttpStatusCode.Conflict);
         }
 
         [HttpDelete]
         [Authorize(Roles = "Admin")]
         public IHttpActionResult Archive(int id)
         {
-            if (this.chemicalService.ArchiveChemical(id))
+            if (chemicalService.ArchiveChemical(id))
             {
-                return this.Ok();
+                return Ok();
             }
 
-            return this.StatusCode(HttpStatusCode.Conflict);
+            return StatusCode(HttpStatusCode.Conflict);
         }
     }
 }

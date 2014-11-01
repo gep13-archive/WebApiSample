@@ -33,7 +33,7 @@ namespace Gep13.Sample.Service
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "This needs to be looked at")]
         public ChemicalDto AddChemical(string name, double balance)
         {
-            if (this.GetByName(name).Any())
+            if (GetByName(name).Any())
             {
                 return null;
             }
@@ -42,8 +42,8 @@ namespace Gep13.Sample.Service
 
             try
             {
-                this.repository.Add(entity);
-                this.SaveChanges();
+                repository.Add(entity);
+                SaveChanges();
                 return Mapper.Map<Chemical, ChemicalDto>(entity);
             }
             catch
@@ -54,11 +54,11 @@ namespace Gep13.Sample.Service
 
         public bool DeleteChemical(int id)
         {
-            var chemical = this.repository.GetById(id);
+            var chemical = repository.GetById(id);
             if (chemical != null)
             {
-                this.repository.Delete(chemical);
-                this.SaveChanges();
+                repository.Delete(chemical);
+                SaveChanges();
                 return true;
             }
 
@@ -67,13 +67,13 @@ namespace Gep13.Sample.Service
 
         public bool ArchiveChemical(int id)
         {
-            var found = this.GetById(id);
+            var found = GetById(id);
 
             if (found != null)
             {
                 found.IsArchived = true;
-                this.repository.Update(found);
-                this.SaveChanges();
+                repository.Update(found);
+                SaveChanges();
                 return true;
             }
 
@@ -82,17 +82,17 @@ namespace Gep13.Sample.Service
 
         public ChemicalDto GetChemicalById(int id)
         {
-            return Mapper.Map<Chemical, ChemicalDto>(this.GetById(id));
+            return Mapper.Map<Chemical, ChemicalDto>(GetById(id));
         }
 
         public IEnumerable<ChemicalDto> GetChemicalByName(string name)
         {
-            return Mapper.Map<IEnumerable<Chemical>, IEnumerable<ChemicalDto>>(this.GetByName(name));
+            return Mapper.Map<IEnumerable<Chemical>, IEnumerable<ChemicalDto>>(GetByName(name));
         }
 
         public IEnumerable<ChemicalDto> GetChemicals()
         {
-            var chemicals = this.repository.GetAll();
+            var chemicals = repository.GetAll();
             return Mapper.Map<IEnumerable<Chemical>, IEnumerable<ChemicalDto>>(chemicals);
         }
 
@@ -103,13 +103,13 @@ namespace Gep13.Sample.Service
                 throw new ArgumentNullException("chemical");
             }
 
-            var found = this.GetByName(chemical.Name);
+            var found = GetByName(chemical.Name);
 
             if (!found.Any())
             {
                 var entity = Mapper.Map<ChemicalDto, Chemical>(chemical);
-                this.repository.Update(entity);
-                this.SaveChanges();
+                repository.Update(entity);
+                SaveChanges();
                 return true;
             }
 
@@ -118,17 +118,17 @@ namespace Gep13.Sample.Service
 
         private IEnumerable<Chemical> GetByName(string name)
         {
-            return this.repository.GetMany(s => s.Name == name);
+            return repository.GetMany(s => s.Name == name);
         }
 
         private Chemical GetById(int id) 
         {
-            return this.repository.GetById(id);
+            return repository.GetById(id);
         }
 
         private void SaveChanges()
         {
-            this.unitOfWork.SaveChanges();
+            unitOfWork.SaveChanges();
         }
     }
 }

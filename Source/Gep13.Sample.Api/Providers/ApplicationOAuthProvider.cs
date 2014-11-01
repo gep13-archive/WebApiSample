@@ -37,13 +37,13 @@ namespace Gep13.Sample.Api.Providers
                 throw new ArgumentNullException("userManagerFactory");
             }
 
-            this.publicClientId = publicClientId;
-            this.userManagerFactory = userManagerFactory;
+            publicClientId = publicClientId;
+            userManagerFactory = userManagerFactory;
         }
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-            using (var userManager = this.userManagerFactory())
+            using (var userManager = userManagerFactory())
             {
                 var user = await userManager.FindAsync(context.UserName, context.Password);
 
@@ -100,7 +100,7 @@ namespace Gep13.Sample.Api.Providers
                 throw new ArgumentNullException("context");
             }
 
-            if (context.ClientId != this.publicClientId)
+            if (context.ClientId != publicClientId)
             {
                 return Task.FromResult<object>(null);
             }

@@ -22,20 +22,20 @@ namespace Gep13.Sample.Data.Infrastructure
 
         protected RepositoryBase(IDatabaseFactory databaseFactory)
         {
-            this.DatabaseFactory = databaseFactory;
-            this.dbset = this.DataContext.Set<T>();
+            DatabaseFactory = databaseFactory;
+            dbset = DataContext.Set<T>();
         }
 
         protected Gep13Context Gep13Context
         {
             get
             {
-                return this.gep13Context;
+                return gep13Context;
             }
 
             private set
             {
-                this.gep13Context = value;
+                gep13Context = value;
             }
         }
 
@@ -47,45 +47,45 @@ namespace Gep13.Sample.Data.Infrastructure
 
         private Gep13Context DataContext
         {
-            get { return this.gep13Context ?? (this.gep13Context = this.DatabaseFactory.GetContext()); }
+            get { return gep13Context ?? (gep13Context = DatabaseFactory.GetContext()); }
         }
 
         public virtual T Add(T entity)
         {
-            this.dbset.Add(entity);
+            dbset.Add(entity);
             return entity;
         }
 
         public virtual void Delete(T entity)
         {
-            this.dbset.Remove(entity);
+            dbset.Remove(entity);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Not applicable")]
         public virtual IEnumerable<T> GetAll()
         {
-            return this.dbset.ToList();
+            return dbset.ToList();
         }
 
         public virtual T GetById(int id)
         {
-            return this.dbset.Find(id);
+            return dbset.Find(id);
         }
 
         public virtual IEnumerable<T> GetMany(Expression<Func<T, bool>> where)
         {
-            return this.dbset.Where(where).ToList();
+            return dbset.Where(where).ToList();
         }
 
         public virtual int GetCount(Expression<Func<T, bool>> where)
         {
-            return this.dbset.Where(where).Count();
+            return dbset.Where(where).Count();
         }
 
         public virtual void Update(T entity)
         {
-            this.dbset.Attach(entity);
-            this.gep13Context.Entry(entity).State = EntityState.Modified;
+            dbset.Attach(entity);
+            gep13Context.Entry(entity).State = EntityState.Modified;
         }
     }
 }
