@@ -30,15 +30,26 @@ namespace Gep13.Sample.Service
             this.unitOfWork = unitOfWork;
         }
 
+        public IEnumerable<ChemicalDto> GetChemicals()
+        {
+            var chemicals = repository.GetAll();
+            return Mapper.Map<IEnumerable<Chemical>, IEnumerable<ChemicalDto>>(chemicals);
+        }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "This needs to be looked at")]
-        public ChemicalDto AddChemical(string name, double balance)
+        public ChemicalDto AddChemical(string name, string code, double balance)
         {
             if (GetByName(name).Any())
             {
                 return null;
             }
 
-            var entity = new Chemical { Name = name, Balance = balance };
+            if (this.GetByCode(code).Any())
+            {
+                return null;
+            }
+
+            var entity = new Chemical { Name = name, Code = code, Balance = balance };
 
             try
             {
@@ -52,34 +63,6 @@ namespace Gep13.Sample.Service
             }
         }
 
-        public bool DeleteChemical(int id)
-        {
-            var chemical = repository.GetById(id);
-            if (chemical != null)
-            {
-                repository.Delete(chemical);
-                SaveChanges();
-                return true;
-            }
-
-            return false;
-        }
-
-        public bool ArchiveChemical(int id)
-        {
-            var found = GetById(id);
-
-            if (found != null)
-            {
-                found.IsArchived = true;
-                repository.Update(found);
-                SaveChanges();
-                return true;
-            }
-
-            return false;
-        }
-
         public ChemicalDto GetChemicalById(int id)
         {
             return Mapper.Map<Chemical, ChemicalDto>(GetById(id));
@@ -90,35 +73,73 @@ namespace Gep13.Sample.Service
             return Mapper.Map<IEnumerable<Chemical>, IEnumerable<ChemicalDto>>(GetByName(name));
         }
 
-        public IEnumerable<ChemicalDto> GetChemicals()
+        public bool UpdateChemical(ChemicalDto chemicalDto)
         {
-            var chemicals = repository.GetAll();
-            return Mapper.Map<IEnumerable<Chemical>, IEnumerable<ChemicalDto>>(chemicals);
-        }
+            if (chemicalDto == null)
+            {
+                throw new ArgumentNullException("chemicalDto");
+            }
 
-        public bool UpdateChemical(ChemicalDto chemical)
-        {
+            var chemical = this.GetById(chemicalDto.Id);
+
             if (chemical == null)
             {
-                throw new ArgumentNullException("chemical");
+                return false;
             }
 
-            var found = GetByName(chemical.Name);
-
-            if (!found.Any())
+            if (this.GetByName(chemicalDto.Name).Any(c => c.Id != chemicalDto.Id))
             {
-                var entity = Mapper.Map<ChemicalDto, Chemical>(chemical);
-                repository.Update(entity);
-                SaveChanges();
-                return true;
+                return false;
             }
 
-            return false;
+            if (this.GetByCode(chemicalDto.Code).Any(c => c.Id != chemicalDto.Id))
+            {
+                return false;
+            }
+
+            Mapper.Map(chemicalDto, chemical);
+            this.repository.Update(chemical);
+            this.SaveChanges();
+            return true;
+        }
+
+        public bool DeleteChemical(int id)
+        {
+            var chemical = this.GetById(id);
+
+            if (chemical == null)
+            {
+                return false;
+            }
+
+            this.repository.Delete(chemical);
+            this.SaveChanges();
+            return true;
+        }
+
+        public bool ArchiveChemical(int id)
+        {
+            var chemical = this.GetById(id);
+
+            if (chemical == null)
+            {
+                return false;
+            }
+
+            chemical.IsArchived = true;
+            this.repository.Update(chemical);
+            this.SaveChanges();
+            return true;
         }
 
         private IEnumerable<Chemical> GetByName(string name)
         {
             return repository.GetMany(s => s.Name == name);
+        }
+
+        private IEnumerable<Chemical> GetByCode(string code)
+        {
+            return this.repository.GetMany(s => s.Code == code);
         }
 
         private Chemical GetById(int id) 

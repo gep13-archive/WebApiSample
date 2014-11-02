@@ -29,7 +29,7 @@ namespace Gep13.Sample.Service.Tests
 
             fakeChemicalRepository.Add(Arg.Do<Chemical>(x => x.Id = 1)).Returns(new Chemical { Id = 1 });
 
-            var chemical = chemicalService.AddChemical("First", 110.99);
+            var chemical = chemicalService.AddChemical("First", "1234", 110.99);
 
             Assert.That(chemical.Id, Is.EqualTo(1));
             fakeUnitOfWork.Received().SaveChanges();
@@ -40,7 +40,7 @@ namespace Gep13.Sample.Service.Tests
         {
             fakeChemicalRepository.GetMany(Arg.Any<Expression<Func<Chemical, bool>>>()).ReturnsForAnyArgs(x => new List<Chemical> { new Chemical { Id = 1 } });
 
-            var chemical = chemicalService.AddChemical("First", 110.99);
+            var chemical = chemicalService.AddChemical("First", "1234", 110.99);
 
             Assert.That(chemical, Is.Null);
         }

@@ -11,6 +11,7 @@ GO
 CREATE TABLE [dbo].[Chemicals](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[Name] [varchar](128) NOT NULL,
+	[Code] [varchar](128) NOT NULL,
 	[IsArchived] [bit] NOT NULL,
 	[Balance] [float] NULL,
  CONSTRAINT [PK_Chemicals] PRIMARY KEY CLUSTERED 

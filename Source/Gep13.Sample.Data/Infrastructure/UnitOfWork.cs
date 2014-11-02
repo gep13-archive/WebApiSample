@@ -16,7 +16,7 @@ namespace Gep13.Sample.Data.Infrastructure
 
         public UnitOfWork(IDatabaseFactory databaseFactory)
         {
-            databaseFactory = databaseFactory;
+            this.databaseFactory = databaseFactory;
         }
 
         private Gep13Context DbContext

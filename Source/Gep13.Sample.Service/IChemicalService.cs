@@ -16,13 +16,13 @@ namespace Gep13.Sample.Service
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Not applicable")]
         IEnumerable<ChemicalDto> GetChemicals();
 
-        ChemicalDto AddChemical(string name, double balance);
+        ChemicalDto AddChemical(string name, string code, double balance);
 
         ChemicalDto GetChemicalById(int id);
 
         IEnumerable<ChemicalDto> GetChemicalByName(string name);
 
-        bool UpdateChemical(ChemicalDto chemical);
+        bool UpdateChemical(ChemicalDto chemicalDto);
 
         bool DeleteChemical(int id);
 
