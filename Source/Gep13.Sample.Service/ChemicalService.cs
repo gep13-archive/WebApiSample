@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Simple.Data;
+
 namespace Gep13.Sample.Service
 {
     using System.Collections.Generic;
@@ -20,13 +22,11 @@ namespace Gep13.Sample.Service
 
     public class ChemicalService : IChemicalService
     {
-        private readonly IChemicalRepository repository;
-        private readonly IUnitOfWork unitOfWork;
+        private readonly dynamic _db;
 
-        public ChemicalService(IChemicalRepository repository, IUnitOfWork unitOfWork)
+        public ChemicalService()
         {
-            this.repository = repository;
-            this.unitOfWork = unitOfWork;
+            _db = Database.OpenNamedConnection("Gep13");
         }
 
         public ChemicalDTO AddChemical(string name, double balance)
@@ -40,8 +40,7 @@ namespace Gep13.Sample.Service
 
             try
             {
-                this.repository.Add(entity);
-                this.SaveChanges();
+                _db.Chemicals.Insert(entity);
                 return Mapper.Map<Chemical, ChemicalDTO>(entity);
             }
             catch
@@ -52,11 +51,10 @@ namespace Gep13.Sample.Service
 
         public bool DeleteChemical(int id)
         {
-            var chemical = this.repository.GetById(id);
+            var chemical = GetById(id);
             if (chemical != null)
             {
-                this.repository.Delete(chemical);
-                this.SaveChanges();
+                _db.Chemicals.DeleteById(id);
                 return true;
             }
 
@@ -65,13 +63,12 @@ namespace Gep13.Sample.Service
 
         public bool ArchiveChemical(int id)
         {
-            var found = this.GetById(id);
+            var found = GetById(id);
 
             if (found != null)
             {
                 found.IsArchived = true;
-                this.repository.Update(found);
-                this.SaveChanges();
+                _db.Chemicals.UpdateById(found);
                 return true;
             }
 
@@ -90,7 +87,7 @@ namespace Gep13.Sample.Service
 
         public IEnumerable<ChemicalDTO> GetChemicals()
         {
-            var chemicals = this.repository.GetAll();
+            var chemicals = _db.Chemicals.GetAll();
             return Mapper.Map<IEnumerable<Chemical>, IEnumerable<ChemicalDTO>>(chemicals);
         }
 
@@ -101,8 +98,7 @@ namespace Gep13.Sample.Service
             if (!found.Any())
             {
                 var entity = Mapper.Map<ChemicalDTO, Chemical>(chemical);
-                this.repository.Update(entity);
-                this.SaveChanges();
+                _db.Chemicals.UpdateById(entity);
                 return true;
             }
 
@@ -111,17 +107,13 @@ namespace Gep13.Sample.Service
 
         private IEnumerable<Chemical> GetByName(string name)
         {
-            return this.repository.GetMany(s => s.Name == name);
+            return _db.Chemicals.GetAllBy(Name: name).Cast<Chemical>();
         }
 
         private Chemical GetById(int id) 
         {
-            return this.repository.GetById(id);
+            return _db.Chemicals.GetById(id).Cast<Chemical>();
         }
 
-        private void SaveChanges()
-        {
-            this.unitOfWork.SaveChanges();
-        }
     }
 }
