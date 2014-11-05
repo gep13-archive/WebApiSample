@@ -26,7 +26,7 @@ namespace Gep13.Sample.Service
 
         public ChemicalService()
         {
-            _db = Database.OpenNamedConnection("Gep13");
+            _db = Database.Open();
         }
 
         public ChemicalDTO AddChemical(string name, double balance)
@@ -87,7 +87,7 @@ namespace Gep13.Sample.Service
 
         public IEnumerable<ChemicalDTO> GetChemicals()
         {
-            var chemicals = _db.Chemicals.GetAll();
+            var chemicals = _db.Chemicals.All().ToList<Chemical>();
             return Mapper.Map<IEnumerable<Chemical>, IEnumerable<ChemicalDTO>>(chemicals);
         }
 
@@ -107,12 +107,12 @@ namespace Gep13.Sample.Service
 
         private IEnumerable<Chemical> GetByName(string name)
         {
-            return _db.Chemicals.GetAllBy(Name: name).Cast<Chemical>();
+            return _db.Chemicals.FindAllBy(Name: name).Cast<Chemical>();
         }
 
         private Chemical GetById(int id) 
         {
-            return _db.Chemicals.GetById(id).Cast<Chemical>();
+            return _db.Chemicals.FindById(id);
         }
 
     }

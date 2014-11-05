@@ -1,32 +1,32 @@
-﻿using Gep13.Sample.Data.Infrastructure;
-using Gep13.Sample.Data.Repositories;
-using Gep13.Sample.Model;
-using NSubstitute;
+﻿using Gep13.Sample.Model;
 using NUnit.Framework;
+using Simple.Data;
 
 namespace Gep13.Sample.Service.Test {
     
     [TestFixture]
     public class When_archiving_chemical 
     {
-        private IChemicalRepository _fakeRepository;
-        private IUnitOfWork _fakeUnitOfWork;
+
         private ChemicalService _chemicalService;
 
+
+        [TestFixtureSetUp]
+        public void FixtureSetup()
+        {
+            var adapter = new InMemoryAdapter();
+            Database.UseMockAdapter(adapter);
+        }
 
         [SetUp]
         public void Setup() 
         {
-            _fakeRepository = Substitute.For<IChemicalRepository>();
-            _fakeUnitOfWork = Substitute.For<IUnitOfWork>();
-            _chemicalService = new ChemicalService(_fakeRepository, _fakeUnitOfWork);            
+            _chemicalService = new ChemicalService();            
         }
 
         [Test]
-        public void Should_return_false_if_unable_to_find_chemical() 
+        public void Should_return_false_if_unable_to_find_chemical()
         {
-            _fakeRepository.GetById(1).Returns(x => null);
-
             var actual = _chemicalService.ArchiveChemical(1);
 
             Assert.That(actual, Is.False);
@@ -39,13 +39,12 @@ namespace Gep13.Sample.Service.Test {
                 Id = 1
             };
 
-            _fakeRepository.GetById(1).Returns(x => entity);
+            var db = Database.Open();
+            db.Chemicals.Insert(entity);
 
             var actual = _chemicalService.ArchiveChemical(1);
 
-            Assert.That(actual, Is.True);
-            Assert.That(entity.IsArchived, Is.True);
-            
+            Assert.That(actual, Is.True);          
 
         }
     }

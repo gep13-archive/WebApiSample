@@ -8,6 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Reflection.Emit;
+using Simple.Data;
 
 namespace Gep13.Sample.Service.Test
 {
@@ -28,40 +29,36 @@ namespace Gep13.Sample.Service.Test
     [TestFixture]
     public class When_creating_chemical
     {
-        private IChemicalRepository _fakeRepository;
-        private IUnitOfWork _fakeUnitOfWork;
         private ChemicalService _chemicalService;
 
         [TestFixtureSetUp]
         public void TestFixtureSetup()
-        {
-
-            _fakeRepository = Substitute.For<IChemicalRepository>();
-            _fakeUnitOfWork = Substitute.For<IUnitOfWork>();
-            _chemicalService = new ChemicalService(_fakeRepository, _fakeUnitOfWork);
-            
+        {           
             Mapper.CreateMap<ChemicalDTO, Chemical>();
             Mapper.CreateMap<Chemical, ChemicalDTO>();
+        }
+
+        [SetUp]
+        public void SetUp()
+        {
+            var adapter = new InMemoryAdapter();
+            Database.UseMockAdapter(adapter);
+            _chemicalService = new ChemicalService();            
         }
 
         [Test]
         public void Should_create_chemical()
         {
-
-            _fakeRepository.GetMany(Arg.Any<Expression<Func<Chemical, bool>>>()).ReturnsForAnyArgs(x => new List<Chemical>());
-            
-            _fakeRepository.Add(Arg.Do<Chemical>(x => x.Id = 1)).Returns(new Chemical { Id = 1 });
             
             var chemical = _chemicalService.AddChemical("First", 110.99);
 
             Assert.That(chemical.Id, Is.EqualTo(1));
-            _fakeUnitOfWork.Received().SaveChanges();
+            
         }
 
         [Test]
         public void Should_return_null_if_chemical_with_same_name_already_exists() 
         {
-            _fakeRepository.GetMany(Arg.Any<Expression<Func<Chemical, bool>>>()).ReturnsForAnyArgs(x => new List<Chemical>{ new Chemical{Id=1}});
 
             var chemical = _chemicalService.AddChemical("First", 110.99);
 

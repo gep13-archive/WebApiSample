@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Simple.Data;
+
 namespace Gep13.Sample.Service.Test
 {
     using System.Collections.Generic;
@@ -33,15 +35,16 @@ namespace Gep13.Sample.Service.Test
         [TestFixtureSetUp]
         public void TestFixtureSetup()
         {
+
             Mapper.CreateMap<Chemical, ChemicalDTO>();
         }
 
         [SetUp]
         public void SetUp()
         {
-            this.fakeChemicalRepository = Substitute.For<IChemicalRepository>();
-            this.fakeUnitOfWork = Substitute.For<IUnitOfWork>();
-            this.chemicalService = new ChemicalService(this.fakeChemicalRepository, this.fakeUnitOfWork);
+            var adapter = new InMemoryAdapter();
+            Database.UseMockAdapter(adapter);
+            this.chemicalService = new ChemicalService();
             this.chemicals = new List<Chemical>
                                  {
                                      { new Chemical { Id = 1, Name = "First" } },
@@ -53,19 +56,25 @@ namespace Gep13.Sample.Service.Test
         [Test]
         public void Should_get_chemical_by_id()
         {
-            this.fakeChemicalRepository.GetById(1).Returns(new Chemical { Id = 1 });
+
+            var db = Database.Open();
+            db.Chemicals.Insert(new Chemical { Id = 1 });
 
             var checmical = this.chemicalService.GetChemicalById(1);
 
             Assert.That(checmical.Id, Is.EqualTo(1));
-
-            this.fakeChemicalRepository.Received().GetById(1);
         }
 
         [Test]
         public void Shoud_get_chemicals()
         {
-            this.fakeChemicalRepository.GetAll().Returns(this.chemicals);
+
+            var db = Database.Open();
+            foreach (var chemical in chemicals)
+            {
+                db.Chemicals.Insert(chemical);
+            }
+
 
             var actual = this.chemicalService.GetChemicals();
 
@@ -77,8 +86,12 @@ namespace Gep13.Sample.Service.Test
         {
             const string ChemicalName = "First";
 
-            // Don't like this! First time I've found a problem with NSubstitute trying to mock the Expression<func<Checmical,bool>>
-            this.fakeChemicalRepository.GetMany(x => x.Name == Arg.Is(ChemicalName)).ReturnsForAnyArgs(this.chemicals.Where(x => x.Name == ChemicalName));
+
+            var db = Database.Open();
+            foreach (var chemical in chemicals)
+            {
+                db.Chemicals.Insert(chemical);
+            }
 
             var result = this.chemicalService.GetChemicalByName(ChemicalName).ToList();
 
@@ -92,11 +105,17 @@ namespace Gep13.Sample.Service.Test
         {
             const string Missing = "Missing";
 
-            this.fakeChemicalRepository.GetMany(x => x.Name == Arg.Is(Missing)).ReturnsForAnyArgs(this.chemicals.Where(x => x.Name == Missing));
+
+            var db = Database.Open();
+            foreach (var chemical in chemicals)
+            {
+                db.Chemicals.Insert(chemical);
+            }
 
             var result = this.chemicalService.GetChemicalByName(Missing);
 
             Assert.That(result, Is.Empty);
         }
+
     }
 }
