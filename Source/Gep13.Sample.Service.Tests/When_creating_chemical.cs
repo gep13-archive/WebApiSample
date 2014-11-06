@@ -42,6 +42,7 @@ namespace Gep13.Sample.Service.Test
         public void SetUp()
         {
             var adapter = new InMemoryAdapter();
+            adapter.SetAutoIncrementKeyColumn("Chemicals","Id");
             Database.UseMockAdapter(adapter);
             _chemicalService = new ChemicalService();            
         }
@@ -57,8 +58,10 @@ namespace Gep13.Sample.Service.Test
         }
 
         [Test]
-        public void Should_return_null_if_chemical_with_same_name_already_exists() 
+        public void Should_return_null_if_chemical_with_same_name_already_exists()
         {
+            var db = Database.Open();
+            db.Chemicals.Insert(new Chemical {Name = "First"});
 
             var chemical = _chemicalService.AddChemical("First", 110.99);
 

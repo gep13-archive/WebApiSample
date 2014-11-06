@@ -15,9 +15,6 @@ namespace Gep13.Sample.Service
     using System.Linq;
 
     using AutoMapper;
-
-    using Gep13.Sample.Data.Infrastructure;
-    using Gep13.Sample.Data.Repositories;
     using Gep13.Sample.Model;
 
     public class ChemicalService : IChemicalService
@@ -31,16 +28,14 @@ namespace Gep13.Sample.Service
 
         public ChemicalDTO AddChemical(string name, double balance)
         {
-            if (this.GetByName(name).Any())
+            if (GetByName(name).Any())
             {
                 return null;
             }
 
-            var entity = new Chemical { Name = name, Balance = balance };
-
             try
             {
-                _db.Chemicals.Insert(entity);
+                Chemical entity = _db.Chemicals.Insert(new Chemical { Name = name, Balance = balance });
                 return Mapper.Map<Chemical, ChemicalDTO>(entity);
             }
             catch
@@ -93,9 +88,9 @@ namespace Gep13.Sample.Service
 
         public bool UpdateChemical(ChemicalDTO chemical)
         {
-            var found = this.GetByName(chemical.Name);
+            var found = GetById(chemical.Id);
 
-            if (!found.Any())
+            if (found != null)
             {
                 var entity = Mapper.Map<ChemicalDTO, Chemical>(chemical);
                 _db.Chemicals.UpdateById(entity);
@@ -107,7 +102,7 @@ namespace Gep13.Sample.Service
 
         private IEnumerable<Chemical> GetByName(string name)
         {
-            return _db.Chemicals.FindAllBy(Name: name).Cast<Chemical>();
+            return _db.Chemicals.FindAllBy(Name: name).ToList<Chemical>();
         }
 
         private Chemical GetById(int id) 

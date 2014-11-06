@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Simple.Data;
+
 namespace Gep13.Sample.Service.Test 
 {
     using Gep13.Sample.Data.Infrastructure;
@@ -20,40 +22,29 @@ namespace Gep13.Sample.Service.Test
     [TestFixture]
     public class When_deleting_chemicals 
     {
-        private IChemicalRepository fakeChemicalRepository;
-        private IUnitOfWork fakeUnitOfWork;
         private ChemicalService chemicalService;
         
         [SetUp]
         public void SetUp()
         {
-            this.fakeChemicalRepository = Substitute.For<IChemicalRepository>();
-            this.fakeUnitOfWork = Substitute.For<IUnitOfWork>();
-            this.chemicalService = new ChemicalService(this.fakeChemicalRepository, this.fakeUnitOfWork);
+            var adapter = new InMemoryAdapter();
+            Database.UseMockAdapter(adapter);
+            this.chemicalService = new ChemicalService();
         }
 
         [Test]
         public void Should_delete_chemical()
         {
-            var fakeChemical = new Chemical { Id = 1 };
+            var db = Database.Open();
+            db.Chemicals.Insert(new Chemical {Id = 1});
 
-            this.fakeChemicalRepository.GetById(Arg.Any<int>()).Returns(fakeChemical);
-
-            this.chemicalService.DeleteChemical(1);
-
-            this.fakeChemicalRepository.Received().Delete(fakeChemical);
-            this.fakeUnitOfWork.Received().SaveChanges();
+            Assert.That(chemicalService.DeleteChemical(1), Is.True);
         }
 
         [Test]
         public void Should_not_delete_chemical_if_not_found()
         {
-            this.fakeChemicalRepository.GetById(Arg.Any<int>()).Returns(r => null);
-
-            this.chemicalService.DeleteChemical(1);
-
-            this.fakeChemicalRepository.DidNotReceive().Delete(Arg.Any<Chemical>());
-            this.fakeUnitOfWork.DidNotReceive().SaveChanges();
+            Assert.That(chemicalService.DeleteChemical(1), Is.False);
         }         
     }
 }

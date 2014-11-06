@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Simple.Data;
+
 namespace Gep13.Sample.Service.Test
 {
     using System.Reflection;
@@ -36,9 +38,14 @@ namespace Gep13.Sample.Service.Test
         [Test]
         public void Should_update()
         {
-            var fakeRepository = Substitute.For<IChemicalRepository>();
-            var fakeUnitOfWork = Substitute.For<IUnitOfWork>();
-            var chemicalService = new ChemicalService(fakeRepository, fakeUnitOfWork);
+            var adapter = new InMemoryAdapter();
+            adapter.SetKeyColumn("Chemicals","Id");
+            Database.UseMockAdapter(adapter);
+
+            var db = Database.Open();
+            db.Chemicals.Insert(new Chemical {Id = 1, Name = "First", Balance = 0.00});
+
+            var chemicalService = new ChemicalService();
 
             var toUpdate = new Service.ChemicalDTO
             {
@@ -47,10 +54,9 @@ namespace Gep13.Sample.Service.Test
                 Name = "First"
             };
 
-            var actual = chemicalService.UpdateChemical(toUpdate);
-
-            fakeRepository.Received().Update(Arg.Any<Chemical>());
-            fakeUnitOfWork.Received().SaveChanges();
+            Assert.That(chemicalService.UpdateChemical(toUpdate), Is.True);
+            Chemical record = db.Chemicals.FindById(1);
+            Assert.That(record.Balance, Is.EqualTo(110.99));
         }
     }
 }
