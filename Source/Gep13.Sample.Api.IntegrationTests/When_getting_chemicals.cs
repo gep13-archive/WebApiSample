@@ -7,7 +7,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Simple.Data;
 
 namespace Gep13.Sample.Api.IntegrationTests
 {
@@ -26,7 +25,6 @@ namespace Gep13.Sample.Api.IntegrationTests
     {
         private static Assembly[] assemblies = { Assembly.Load("Gep13.Sample.Api"), Assembly.Load("Gep13.Sample.Service") };
         private TestServer testServer;
-        private Adapter inMemory;
 
         [TestFixtureSetUp]
         public void FixtureInit()
