@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+
 namespace Gep13.Sample.Service.Tests
 {
     using Gep13.Sample.Model;
@@ -28,10 +30,43 @@ namespace Gep13.Sample.Service.Tests
                 Name = "First"
             };
 
+            fakeChemicalRepository.GetById(1).Returns(new Chemical {Id = 1, Balance = 100, Name = "First"});
+
             var actual = chemicalService.UpdateChemical(toUpdate);
 
+            Assert.That(actual, Is.True);
             fakeChemicalRepository.Received().Update(Arg.Any<Chemical>());
             fakeUnitOfWork.Received().SaveChanges();
+        }
+
+        [Test]
+        public void Should_throw_ArgumentNullException_if_DTO_is_null()
+        {
+            Assert.Throws<ArgumentNullException>(() => chemicalService.UpdateChemical(null));
+        }
+
+        [Test]
+        public void Should_return_false_if_unable_to_find_record()
+        {
+            fakeChemicalRepository.GetById(1).Returns(x => null);
+
+            Assert.That(()=> chemicalService.UpdateChemical(new ChemicalDto{Id = 1}),Is.False);
+        }
+
+        [Test]
+        public void Should_return_false_if_another_Chemical_found_with_same_name()
+        {
+            fakeChemicalRepository.GetMany(x => x.Name == "Test").Returns( new [] {new Chemical {Id = 2}});
+
+            Assert.That(()=> chemicalService.UpdateChemical(new ChemicalDto{Id = 1, Name = "Test"}),Is.False);
+        }
+
+        [Test]
+        public void Should_return_false_if_another_chemical_found_with_same_code()
+        {
+            fakeChemicalRepository.GetMany(x => x.Code == "123").Returns(new[] {new Chemical {Id = 2, Code = "123"}});
+
+            Assert.That(() => chemicalService.UpdateChemical(new ChemicalDto{Id=1, Code = "123"}), Is.False);
         }
     }
 }
