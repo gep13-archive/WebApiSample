@@ -18,6 +18,8 @@ namespace Gep13.Sample.Model
 
         public string Name { get; set; }
 
+        public string Code { get; set; }
+
         public bool IsArchived { get; set; }
 
         public double Balance { get; set; }

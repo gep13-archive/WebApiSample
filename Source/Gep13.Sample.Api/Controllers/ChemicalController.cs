@@ -25,7 +25,7 @@ namespace Gep13.Sample.Api.Controllers
 
         public ChemicalController(IChemicalService chemicalService)
         {
-            chemicalService = chemicalService;
+            this.chemicalService = chemicalService;
         }
 
         public IHttpActionResult Get()
@@ -48,7 +48,7 @@ namespace Gep13.Sample.Api.Controllers
                 throw new ArgumentNullException("chemicalViewModel");
             }
 
-            var item = chemicalService.AddChemical(chemicalViewModel.Name, chemicalViewModel.Balance);
+            var item = chemicalService.AddChemical(chemicalViewModel.Name, chemicalViewModel.Code, chemicalViewModel.Balance);
 
             if (item == null) 
             {

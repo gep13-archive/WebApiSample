@@ -16,15 +16,31 @@ namespace Gep13.Sample.Api.IntegrationTests
 
     using Gep13.Sample.Common;
 
+    using Microsoft.Owin.Security.OAuth;
+
     using Owin;
 
-    public class Startup
+    public partial class Startup
     {
         public void Configuration(IAppBuilder app)
         {
-            var config = new HttpConfiguration();
-            config.Routes.MapHttpRoute("DefaultApi", "api/{controller}/{id}", new { id = RouteParameter.Optional });
+            this.ConfigureAuth(app);
 
+            var config = new HttpConfiguration();
+            config.EnableCors();
+
+            // Web API configuration and services
+            // Configure Web API to use only bearer token authentication.
+            config.SuppressDefaultHostAuthentication();
+            config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
+
+            //// config.Filters.Add(new AuthorizeAttribute());
+
+            // Web API routes
+            config.MapHttpAttributeRoutes();
+
+            config.Routes.MapHttpRoute("DefaultApi", "api/{controller}/{id}", new { id = RouteParameter.Optional });
+            
             var containerBuilder = AutofacBootstrapper.Configure();
 
             containerBuilder.RegisterApiControllers(Assembly.Load("Gep13.Sample.Api"));

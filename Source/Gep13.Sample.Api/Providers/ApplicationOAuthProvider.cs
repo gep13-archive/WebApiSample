@@ -37,8 +37,8 @@ namespace Gep13.Sample.Api.Providers
                 throw new ArgumentNullException("userManagerFactory");
             }
 
-            publicClientId = publicClientId;
-            userManagerFactory = userManagerFactory;
+            this.publicClientId = publicClientId;
+            this.userManagerFactory = userManagerFactory;
         }
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
