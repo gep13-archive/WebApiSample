@@ -22,12 +22,10 @@ namespace Gep13.Sample.Service
     public class ChemicalService : IChemicalService
     {
         private readonly IChemicalRepository repository;
-        private readonly IUnitOfWork unitOfWork;
 
-        public ChemicalService(IChemicalRepository repository, IUnitOfWork unitOfWork)
+        public ChemicalService(IChemicalRepository repository)
         {
             this.repository = repository;
-            this.unitOfWork = unitOfWork;
         }
 
         public IEnumerable<ChemicalDto> GetChemicals()
@@ -44,7 +42,7 @@ namespace Gep13.Sample.Service
                 return null;
             }
 
-            if (this.GetByCode(code).Any())
+            if (GetByCode(code).Any())
             {
                 return null;
             }
@@ -53,8 +51,7 @@ namespace Gep13.Sample.Service
 
             try
             {
-                repository.Add(entity);
-                SaveChanges();
+                repository.Insert(entity);
                 return Mapper.Map<Chemical, ChemicalDto>(entity);
             }
             catch
@@ -99,7 +96,6 @@ namespace Gep13.Sample.Service
 
             Mapper.Map(chemicalDto, chemical);
             this.repository.Update(chemical);
-            this.SaveChanges();
             return true;
         }
 
@@ -113,7 +109,6 @@ namespace Gep13.Sample.Service
             }
 
             this.repository.Delete(chemical);
-            this.SaveChanges();
             return true;
         }
 
@@ -128,28 +123,22 @@ namespace Gep13.Sample.Service
 
             chemical.IsArchived = true;
             this.repository.Update(chemical);
-            this.SaveChanges();
             return true;
         }
 
         private IEnumerable<Chemical> GetByName(string name)
         {
-            return repository.GetMany(s => s.Name == name);
+            return repository.GetByName(name);
         }
 
         private IEnumerable<Chemical> GetByCode(string code)
         {
-            return this.repository.GetMany(s => s.Code == code);
+            return this.repository.GetByCode(code);
         }
 
         private Chemical GetById(int id) 
         {
             return repository.GetById(id);
-        }
-
-        private void SaveChanges()
-        {
-            unitOfWork.SaveChanges();
         }
     }
 }

@@ -32,8 +32,8 @@ namespace Gep13.Sample.Api.Controllers
                 throw new ArgumentNullException("userManager");
             }
 
-            userManager = userManager;
-            roleManager = roleManager;
+            this.userManager = userManager;
+            this.roleManager = roleManager;
 
             ////TODO: This needs to be moved from here.
             userManager.UserValidator = new UserValidator<IdentityUser>(userManager)

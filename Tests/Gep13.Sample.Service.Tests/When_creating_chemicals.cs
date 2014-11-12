@@ -25,9 +25,10 @@ namespace Gep13.Sample.Service.Tests
         [Test]
         public void Should_create_chemical()
         {
-            fakeChemicalRepository.GetMany(Arg.Any<Expression<Func<Chemical, bool>>>()).ReturnsForAnyArgs(x => new List<Chemical>());
+            fakeChemicalRepository.GetByName("First").Returns(x => new List<Chemical>());
+            fakeChemicalRepository.GetByCode("1234").Returns(x => new List<Chemical>());
 
-            fakeChemicalRepository.Add(Arg.Do<Chemical>(x => x.Id = 1)).Returns(new Chemical { Id = 1 });
+            fakeChemicalRepository.Insert(Arg.Do<Chemical>(x => x.Id = 1)).Returns(new Chemical { Id = 1 });
 
             var chemical = chemicalService.AddChemical("First", "1234", 110.99);
 
@@ -38,7 +39,7 @@ namespace Gep13.Sample.Service.Tests
         [Test]
         public void Should_return_null_if_chemical_with_same_name_already_exists()
         {
-            fakeChemicalRepository.GetMany(Arg.Any<Expression<Func<Chemical, bool>>>()).ReturnsForAnyArgs(x => new List<Chemical> { new Chemical { Id = 1 } });
+            fakeChemicalRepository.GetByName("First").Returns(x => new List<Chemical> { new Chemical { Id = 1 } });
 
             var chemical = chemicalService.AddChemical("First", "1234", 110.99);
 

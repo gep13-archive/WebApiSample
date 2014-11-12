@@ -13,7 +13,7 @@ namespace Gep13.Sample.Common
 
     public class ScriptRunner
     {
-        private const string ConnectionName = "gep13";
+        private const string ConnectionName = "Simple.Data.Properties.Settings.DefaultConnectionString";
 
         private readonly DatabaseSupport databaseSupport;
 

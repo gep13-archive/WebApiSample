@@ -8,6 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 
 namespace Gep13.Sample.Service.Tests
 {
@@ -56,7 +57,7 @@ namespace Gep13.Sample.Service.Tests
         [Test]
         public void Should_return_false_if_another_Chemical_found_with_same_name()
         {
-            fakeChemicalRepository.GetMany(x => x.Name == "Test").Returns( new [] {new Chemical {Id = 2}});
+            fakeChemicalRepository.GetByName("Test").Returns( new [] {new Chemical {Id = 2}});
 
             Assert.That(()=> chemicalService.UpdateChemical(new ChemicalDto{Id = 1, Name = "Test"}),Is.False);
         }
@@ -64,7 +65,8 @@ namespace Gep13.Sample.Service.Tests
         [Test]
         public void Should_return_false_if_another_chemical_found_with_same_code()
         {
-            fakeChemicalRepository.GetMany(x => x.Code == "123").Returns(new[] {new Chemical {Id = 2, Code = "123"}});
+            fakeChemicalRepository.GetByName(Arg.Any<string>()).Returns(x => new List<Chemical>());
+            fakeChemicalRepository.GetByCode("123").Returns(new[] {new Chemical {Id = 2, Code = "123"}});
 
             Assert.That(() => chemicalService.UpdateChemical(new ChemicalDto{Id=1, Code = "123"}), Is.False);
         }

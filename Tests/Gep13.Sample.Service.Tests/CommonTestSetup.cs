@@ -31,7 +31,7 @@ namespace Gep13.Sample.Service.Tests
         {
             fakeChemicalRepository = Substitute.For<IChemicalRepository>();
             fakeUnitOfWork = Substitute.For<IUnitOfWork>();
-            chemicalService = new ChemicalService(fakeChemicalRepository, fakeUnitOfWork);
+            chemicalService = new ChemicalService(fakeChemicalRepository);
         }
     }
 }

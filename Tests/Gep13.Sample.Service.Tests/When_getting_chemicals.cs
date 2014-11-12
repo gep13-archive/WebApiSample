@@ -61,8 +61,8 @@ namespace Gep13.Sample.Service.Tests
         {
             const string ChemicalName = "First";
 
-            // Don't like this! First time I've found a problem with NSubstitute trying to mock the Expression<func<Checmical,bool>>
-            fakeChemicalRepository.GetMany(x => x.Name == Arg.Is(ChemicalName)).ReturnsForAnyArgs(chemicals.Where(x => x.Name == ChemicalName));
+            
+            fakeChemicalRepository.GetByName("First").ReturnsForAnyArgs(chemicals.Where(x => x.Name == ChemicalName));
 
             var result = chemicalService.GetChemicalByName(ChemicalName).ToList();
 
@@ -76,7 +76,7 @@ namespace Gep13.Sample.Service.Tests
         {
             const string Missing = "Missing";
 
-            fakeChemicalRepository.GetMany(x => x.Name == Arg.Is(Missing)).ReturnsForAnyArgs(chemicals.Where(x => x.Name == Missing));
+            fakeChemicalRepository.GetByName("Missing").Returns(chemicals.Where(x => x.Name == Missing));
 
             var result = chemicalService.GetChemicalByName(Missing);
 
