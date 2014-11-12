@@ -33,18 +33,18 @@
   <ItemGroup>
     <Reference Include="AutoMapper, Version=3.3.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\AutoMapper.3.3.0-ci1008\lib\net40\AutoMapper.dll</HintPath>
+      <HintPath>..\..\Source\packages\AutoMapper.3.3.0-ci1008\lib\net40\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="AutoMapper.Net4, Version=3.3.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\AutoMapper.3.3.0-ci1008\lib\net40\AutoMapper.Net4.dll</HintPath>
+      <HintPath>..\..\Source\packages\AutoMapper.3.3.0-ci1008\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
     <Reference Include="NSubstitute">
-      <HintPath>..\packages\NSubstitute.1.7.2.0\lib\NET45\NSubstitute.dll</HintPath>
+      <HintPath>..\..\Source\packages\NSubstitute.1.7.2.0\lib\NET45\NSubstitute.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+      <HintPath>..\..\Source\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -55,7 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\CommonAssemblyInfo.cs">
+    <Compile Include="..\..\Source\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="CommonTestSetup.cs" />
@@ -71,25 +71,25 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Gep13.Sample.Api\Gep13.Sample.Api.csproj">
+    <ProjectReference Include="..\..\Source\Gep13.Sample.Api\Gep13.Sample.Api.csproj">
       <Project>{12ADAB22-983D-4B16-870B-9B57C8389E56}</Project>
       <Name>Gep13.Sample.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Gep13.Sample.Data\Gep13.Sample.Data.csproj">
+    <ProjectReference Include="..\..\Source\Gep13.Sample.Data\Gep13.Sample.Data.csproj">
       <Project>{21a8b9b8-4fe9-41bb-a1a7-cf4774f25c6e}</Project>
       <Name>Gep13.Sample.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Gep13.Sample.Model\Gep13.Sample.Model.csproj">
+    <ProjectReference Include="..\..\Source\Gep13.Sample.Model\Gep13.Sample.Model.csproj">
       <Project>{FAD57263-AC42-4BDC-A82C-6F1263BCDC96}</Project>
       <Name>Gep13.Sample.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Gep13.Sample.Service\Gep13.Sample.Service.csproj">
+    <ProjectReference Include="..\..\Source\Gep13.Sample.Service\Gep13.Sample.Service.csproj">
       <Project>{941818d4-68fb-40c7-9cc0-79410edf3374}</Project>
       <Name>Gep13.Sample.Service</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\AutoMapper.3.3.0-ci1008\tools\AutoMapper.targets" Condition="Exists('..\packages\AutoMapper.3.3.0-ci1008\tools\AutoMapper.targets')" />
+  <Import Project="..\..\Source\packages\AutoMapper.3.3.0-ci1008\tools\AutoMapper.targets" Condition="Exists('..\..\Source\packages\AutoMapper.3.3.0-ci1008\tools\AutoMapper.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

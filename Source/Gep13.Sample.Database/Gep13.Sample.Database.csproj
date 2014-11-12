@@ -76,20 +76,12 @@
     </CodeAnalysisDictionary>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\Gep13.Sample.Api.IntegrationTests\Database Scripts\Script0001 - Create Identity Tables.sql">
+    <Content Include="..\..\Tests\Gep13.Sample.Api.IntegrationTests\Database Scripts\Script0001 - Create Identity Tables.sql">
       <Link>Scripts\Script0001 - Create Identity Tables.sql</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\Gep13.Sample.Api.IntegrationTests\Database Scripts\Script0002 - Create Chemical Table.sql">
+    </Content>
+    <Content Include="..\..\Tests\Gep13.Sample.Api.IntegrationTests\Database Scripts\Script0002 - Create Chemical Table.sql">
       <Link>Scripts\Script0002 - Create Chemical Table.sql</Link>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="..\Gep13.Sample.Api.IntegrationTests\Database Scripts\Script0501 - Create Sample Users.sql">
-      <Link>Scripts\Script0501 - Create Sample Users.sql</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\Gep13.Sample.Api.IntegrationTests\Database Scripts\Script0502 - Create Sample Chemical Data.sql">
-      <Link>Scripts\Script0502 - Create Sample Chemical Data.sql</Link>
-    </EmbeddedResource>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\BuildScripts\CodeAnalysis.props" Condition="Exists('..\..\BuildScripts\CodeAnalysis.props')" />
