@@ -10,7 +10,6 @@
 namespace Gep13.Sample.Data.Repositories
 {
     using System.Collections.Generic;
-    using Gep13.Sample.Data.Infrastructure;
     using Gep13.Sample.Model;
     using Simple.Data;
 
@@ -25,12 +24,12 @@ namespace Gep13.Sample.Data.Repositories
 
         public Chemical GetById(int id) 
         {
-            return db.Checmicals.FindById(id);
+            return db.Chemicals.FindById(id);
         }
 
         public IEnumerable<Chemical> GetAll() 
         {
-            return db.Chemicals.All().ToList();
+            return db.Chemicals.All().ToList<Chemical>();
         }
 
         public IEnumerable<Chemical> GetByName(string name) 
@@ -40,17 +39,17 @@ namespace Gep13.Sample.Data.Repositories
 
         public IEnumerable<Chemical> GetByCode(string code) 
         {
-            return db.Chemicals.FindByCode(code).ToList<Chemical>();
+            return db.Chemicals.FindAllByCode(code).ToList<Chemical>();
         }
 
         public Chemical Insert(Chemical chemical) 
         {
-            return db.Checmicals.Insert(chemical);
+            return db.Chemicals.Insert(chemical);
         }
 
-        public Chemical Update(Chemical chemical) 
+        public void Update(Chemical chemical) 
         {
-            return db.Chemicals.Update(chemical);
+            db.Chemicals.Update(chemical);
         }
 
         public void Delete(Chemical chemical) 

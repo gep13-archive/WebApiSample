@@ -23,7 +23,7 @@ namespace Gep13.Sample.Data.Repositories
 
         IEnumerable<Chemical> GetByCode(string code);
 
-        Chemical Update(Chemical chemical);
+        void Update(Chemical chemical);
         
         Chemical Insert(Chemical chemical);
         

@@ -47,11 +47,9 @@ namespace Gep13.Sample.Service
                 return null;
             }
 
-            var entity = new Chemical { Name = name, Code = code, Balance = balance };
-
             try
             {
-                repository.Insert(entity);
+                var entity = repository.Insert(new Chemical { Name = name, Code = code, Balance = balance });
                 return Mapper.Map<Chemical, ChemicalDto>(entity);
             }
             catch
