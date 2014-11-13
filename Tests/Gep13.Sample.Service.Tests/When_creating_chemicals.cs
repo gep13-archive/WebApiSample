@@ -33,7 +33,6 @@ namespace Gep13.Sample.Service.Tests
             var chemical = chemicalService.AddChemical("First", "1234", 110.99);
 
             Assert.That(chemical.Id, Is.EqualTo(1));
-            fakeUnitOfWork.Received().SaveChanges();
         }
 
         [Test]

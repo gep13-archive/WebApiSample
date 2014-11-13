@@ -13,7 +13,7 @@
 
     public abstract class CommonTestSetup
     {
-        private const string ConnectionName = "Gep13";
+        private const string ConnectionName = "Simple.Data.Properties.Settings.DefaultConnectionString";
 
         private readonly ScriptRunner scriptRunner;
 

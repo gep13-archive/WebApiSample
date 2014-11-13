@@ -12,7 +12,6 @@ namespace Gep13.Sample.Service.Tests
     public abstract class CommonTestSetup
     {
         protected IChemicalRepository fakeChemicalRepository;
-        protected IUnitOfWork fakeUnitOfWork;
         protected ChemicalService chemicalService;
 
         protected CommonTestSetup()
@@ -30,7 +29,6 @@ namespace Gep13.Sample.Service.Tests
         public void Setup()
         {
             fakeChemicalRepository = Substitute.For<IChemicalRepository>();
-            fakeUnitOfWork = Substitute.For<IUnitOfWork>();
             chemicalService = new ChemicalService(fakeChemicalRepository);
         }
     }

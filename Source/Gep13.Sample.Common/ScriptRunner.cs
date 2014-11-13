@@ -19,7 +19,8 @@ namespace Gep13.Sample.Common
 
         public ScriptRunner(string connectionStringName)
         {
-            this.databaseSupport = new DatabaseSupport(ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString);
+            var conn = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
+            this.databaseSupport = new DatabaseSupport(conn);
         }
 
         public static ScriptRunner Get(string connectionStringName)

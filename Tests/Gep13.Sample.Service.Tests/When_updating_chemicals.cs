@@ -37,7 +37,6 @@ namespace Gep13.Sample.Service.Tests
 
             Assert.That(actual, Is.True);
             fakeChemicalRepository.Received().Update(Arg.Any<Chemical>());
-            fakeUnitOfWork.Received().SaveChanges();
         }
 
         [Test]

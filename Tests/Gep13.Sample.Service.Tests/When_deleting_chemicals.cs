@@ -28,7 +28,6 @@ namespace Gep13.Sample.Service.Tests
             chemicalService.DeleteChemical(1);
 
             fakeChemicalRepository.Received().Delete(fakeChemical);
-            fakeUnitOfWork.Received().SaveChanges();
         }
 
         [Test]
@@ -39,7 +38,6 @@ namespace Gep13.Sample.Service.Tests
             chemicalService.DeleteChemical(1);
 
             fakeChemicalRepository.DidNotReceive().Delete(Arg.Any<Chemical>());
-            fakeUnitOfWork.DidNotReceive().SaveChanges();
         }         
     }
 }
