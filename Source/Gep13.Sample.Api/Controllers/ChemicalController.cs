@@ -56,6 +56,23 @@ namespace Gep13.Sample.Api.Controllers
             }
         }
 
+        [Route("api/Chemical/{id}/HazardInfo")]
+        public IHttpActionResult GetHazardInfo(int id)
+        {
+            var databaseOperation = this.chemicalService.GetHazardInfoForChemicalId(id);
+
+            switch (databaseOperation.Status)
+            {
+                case DatabaseOperationStatus.NotFound:
+                    return this.StatusCode(HttpStatusCode.NotFound);
+                case DatabaseOperationStatus.Success:
+                    var chemicalViewModel = Mapper.Map<HazardInfoDto, HazardInfoViewModel>(databaseOperation.Result);
+                    return this.Ok(chemicalViewModel);
+                default:
+                    return this.StatusCode(HttpStatusCode.InternalServerError);
+            }
+        }
+
         [Authorize(Roles = "Admin")]
         public IHttpActionResult Post(ChemicalViewModel chemicalViewModel)
         {
@@ -84,6 +101,25 @@ namespace Gep13.Sample.Api.Controllers
         {
             var databaseOperation = this.chemicalService.UpdateChemical(Mapper.Map<ChemicalViewModel, ChemicalDto>(chemicalViewModel));
             
+            switch (databaseOperation.Status)
+            {
+                case DatabaseOperationStatus.Conflict:
+                    return this.StatusCode(HttpStatusCode.Conflict);
+                case DatabaseOperationStatus.Success:
+                    return this.Ok(databaseOperation.Result);
+                case DatabaseOperationStatus.ConcurrencyProblem:
+                    return this.StatusCode(HttpStatusCode.PreconditionFailed);
+                default:
+                    return this.StatusCode(HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [Route("api/Chemical/{id}/HazardInfo")]
+        [Authorize(Roles = "Admin")]
+        public IHttpActionResult Put(int id, HazardInfoViewModel hazardInfoViewModel)
+        {
+            var databaseOperation = this.chemicalService.UpdateHazardInfo(id, Mapper.Map<HazardInfoViewModel, HazardInfoDto>(hazardInfoViewModel));
+
             switch (databaseOperation.Status)
             {
                 case DatabaseOperationStatus.Conflict:

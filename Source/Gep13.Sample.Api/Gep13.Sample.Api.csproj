@@ -217,6 +217,7 @@
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\ChemicalViewModel.cs" />
+    <Compile Include="ViewModels\HazardInfoViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

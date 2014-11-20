@@ -35,8 +35,10 @@
 
             scriptRunner.Run(@"..\..\Database Scripts\Script0001 - Create Identity Tables.sql");
             scriptRunner.Run(@"..\..\Database Scripts\Script0002 - Create Chemical Table.sql");
+            scriptRunner.Run(@"..\..\Database Scripts\Script0003 - Create HazardInfos Table.sql");
             scriptRunner.Run(@"..\..\Database Scripts\Script0501 - Create Sample Users.sql");
             scriptRunner.Run(@"..\..\Database Scripts\Script0502 - Create Sample Chemical Data.sql");
+            scriptRunner.Run(@"..\..\Database Scripts\Script0503 - Create Sample HazardInfo Data.sql");
 
             PostSetup(this.TestServer);
         }

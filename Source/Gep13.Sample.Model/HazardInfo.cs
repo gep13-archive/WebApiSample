@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Chemical.cs" company="Gary Ewan Park">
+// <copyright file="HazardInfo.cs" company="Gary Ewan Park">
 //   Copyright (c) Gary Ewan Park, 2014, All rights reserved.
 // </copyright>
 // <summary>
-//   Defines the Chemical type.
+//   Defines the HazardInfo type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,22 +12,20 @@ namespace Gep13.Sample.Model
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    [Table("Chemicals")]
-    public class Chemical
+    [Table("HazardInfos")]
+    public class HazardInfo
     {
-        public int Id { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public int ChemicalId { get; set; }
 
         public string Name { get; set; }
 
-        public string Code { get; set; }
-
-        public bool IsArchived { get; set; }
-
-        public double Balance { get; set; }
+        public string Danger { get; set; }
 
         [Timestamp]
         public byte[] RowVersion { get; set; }
 
-        public HazardInfo HazardInfo { get; set; }
+        public Chemical Chemical { get; set; }
     }
 }

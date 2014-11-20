@@ -1,19 +1,22 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IChemicalRepository.cs" company="Gary Ewan Park">
+// <copyright file="HazardInfoViewModel.cs" company="Gary Ewan Park">
 //   Copyright (c) Gary Ewan Park, 2014, All rights reserved.
 // </copyright>
 // <summary>
-//   Defines the IChemicalRepository type.
+//   Defines the HazardInfoViewModel type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Gep13.Sample.Data.Repositories
+namespace Gep13.Sample.Api.ViewModels
 {
-    using Gep13.Sample.Data.Infrastructure;
-    using Gep13.Sample.Model;
-
-    public interface IChemicalRepository : IRepository<Chemical>
+    public class HazardInfoViewModel
     {
-        Chemical GetWithHazardInfoById(int id);
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+
+        public string Danger { get; set; }
+
+        public string RowVersion { get; set; }
     }
 }

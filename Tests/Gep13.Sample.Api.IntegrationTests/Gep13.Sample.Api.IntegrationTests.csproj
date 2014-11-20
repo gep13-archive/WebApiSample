@@ -134,6 +134,7 @@
     <Compile Include="Chemicals\When_getting_chemicals.cs" />
     <Compile Include="Chemicals\When_not_authenticated.cs" />
     <Compile Include="Chemicals\When_updating_checmicals.cs" />
+    <Compile Include="Chemicals\When_updating_hazardinfos.cs" />
     <Compile Include="CommonAuthenticatedTestSetup.cs" />
     <Compile Include="CommonTestSetup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -172,8 +173,10 @@
   <ItemGroup>
     <Content Include="Database Scripts\Script0001 - Create Identity Tables.sql" />
     <Content Include="Database Scripts\Script0002 - Create Chemical Table.sql" />
+    <Content Include="Database Scripts\Script0003 - Create HazardInfos Table.sql" />
     <Content Include="Database Scripts\Script0501 - Create Sample Users.sql" />
     <Content Include="Database Scripts\Script0502 - Create Sample Chemical Data.sql" />
+    <Content Include="Database Scripts\Script0503 - Create Sample HazardInfo Data.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\Source\packages\AutoMapper.3.3.0-ci1008\tools\AutoMapper.targets" Condition="Exists('..\..\Source\packages\AutoMapper.3.3.0-ci1008\tools\AutoMapper.targets')" />

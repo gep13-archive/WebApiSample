@@ -23,5 +23,14 @@ namespace Gep13.Sample.Data
         }
 
         public DbSet<Chemical> Chemicals { get; set; }
+
+        public DbSet<HazardInfo> HazardInfos { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Chemical>().HasOptional(e => e.HazardInfo).WithRequired(e => e.Chemical);
+        }
     }
 }

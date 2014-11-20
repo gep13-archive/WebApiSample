@@ -9,6 +9,8 @@
 
 namespace Gep13.Sample.Data.Repositories
 {
+    using System.Linq;
+
     using Gep13.Sample.Data.Infrastructure;
     using Gep13.Sample.Model;
 
@@ -17,6 +19,11 @@ namespace Gep13.Sample.Data.Repositories
         public ChemicalRepository(IDatabaseFactory databaseFactory)
             : base(databaseFactory)
         {
+        }
+
+        public virtual Chemical GetWithHazardInfoById(int id)
+        {
+            return this.Gep13Context.Set<Chemical>().Include("HazardInfo").FirstOrDefault(h => h.Id == id);
         }
     }
 }

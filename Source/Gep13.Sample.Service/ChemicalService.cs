@@ -50,7 +50,7 @@ namespace Gep13.Sample.Service
                 return new DatabaseOperation<ChemicalDto>() { Status = DatabaseOperationStatus.Conflict, Result = null };
             }
 
-            var entity = new Chemical { Name = name, Code = code, Balance = balance };
+            var entity = new Chemical { Name = name, Code = code, Balance = balance, HazardInfo = new HazardInfo() };
 
             try
             {
@@ -100,6 +100,22 @@ namespace Gep13.Sample.Service
                              };
         }
 
+        public DatabaseOperation<HazardInfoDto> GetHazardInfoForChemicalId(int id)
+        {
+            var chemical = this.repository.GetWithHazardInfoById(id);
+            return chemical == null
+            ? new DatabaseOperation<HazardInfoDto>()
+            {
+                Status = DatabaseOperationStatus.NotFound,
+                Result = null
+            }
+            : new DatabaseOperation<HazardInfoDto>()
+            {
+                Status = DatabaseOperationStatus.Success,
+                Result = Mapper.Map<HazardInfo, HazardInfoDto>(chemical.HazardInfo)
+            };
+        }
+
         public DatabaseOperation<ChemicalDto> UpdateChemical(ChemicalDto chemicalDto)
         {
             if (chemicalDto == null)
@@ -137,6 +153,41 @@ namespace Gep13.Sample.Service
                                Status = DatabaseOperationStatus.ConcurrencyProblem,
                                Result = null
                            };
+            }
+        }
+
+        public DatabaseOperation<HazardInfoDto> UpdateHazardInfo(int chemicalId, HazardInfoDto hazardInfoDto)
+        {
+            if (hazardInfoDto == null)
+            {
+                throw new ArgumentNullException("hazardInfoDto");
+            }
+
+            var chemical = this.repository.GetWithHazardInfoById(chemicalId);
+
+            if (chemical == null)
+            {
+                return new DatabaseOperation<HazardInfoDto>() { Status = DatabaseOperationStatus.NotFound, Result = null };
+            }
+
+            try
+            {
+                Mapper.Map(hazardInfoDto, chemical.HazardInfo);
+                this.repository.Update(chemical);
+                this.SaveChanges();
+                return new DatabaseOperation<HazardInfoDto>()
+                {
+                    Status = DatabaseOperationStatus.Success,
+                    Result = Mapper.Map<HazardInfo, HazardInfoDto>(chemical.HazardInfo)
+                };
+            }
+            catch (DbUpdateConcurrencyException dbucException)
+            {
+                return new DatabaseOperation<HazardInfoDto>()
+                {
+                    Status = DatabaseOperationStatus.ConcurrencyProblem,
+                    Result = null
+                };
             }
         }
 

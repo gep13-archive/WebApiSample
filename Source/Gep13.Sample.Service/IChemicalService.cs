@@ -22,7 +22,11 @@ namespace Gep13.Sample.Service
 
         DatabaseOperation<IEnumerable<ChemicalDto>> GetChemicalByName(string name);
 
+        DatabaseOperation<HazardInfoDto> GetHazardInfoForChemicalId(int id);
+
         DatabaseOperation<ChemicalDto> UpdateChemical(ChemicalDto chemicalDto);
+
+        DatabaseOperation<HazardInfoDto> UpdateHazardInfo(int chemicalId, HazardInfoDto hazardInfoDto);
 
         DatabaseOperationStatus DeleteChemical(int id);
 

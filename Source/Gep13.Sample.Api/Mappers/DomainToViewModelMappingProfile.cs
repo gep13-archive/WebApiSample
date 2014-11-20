@@ -32,6 +32,10 @@ namespace Gep13.Sample.Api.Mappers
             Mapper.CreateMap<ChemicalDto, ChemicalViewModel>()
                 .ForMember(vm => vm.RowVersion, dm => dm.MapFrom(dModel => Convert.ToBase64String(dModel.RowVersion)));
             Mapper.CreateMap<Chemical, ChemicalDto>();
+
+            Mapper.CreateMap<HazardInfoDto, HazardInfoViewModel>()
+                .ForMember(vm => vm.RowVersion, dm => dm.MapFrom(dModel => Convert.ToBase64String(dModel.RowVersion)));
+            Mapper.CreateMap<HazardInfo, HazardInfoDto>();
         }
     }
 }

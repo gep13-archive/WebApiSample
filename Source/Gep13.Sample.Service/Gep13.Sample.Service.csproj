@@ -70,6 +70,7 @@
     <Compile Include="DatabaseOperation.cs" />
     <Compile Include="DatabaseOperationStatus.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="HazardInfoDTO.cs" />
     <Compile Include="IChemicalService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
