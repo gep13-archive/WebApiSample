@@ -30,7 +30,7 @@
         }
 
         [Test]
-        public async Task Should_return_statuscode_conflict_if_deleting_chemical_that_doesnt_exist()
+        public async Task Should_return_statuscode_notfound_if_deleting_chemical_that_doesnt_exist()
         {
             // Arrange
             this.uri = string.Format("{0}{1}", this.uriBase, "/3");
@@ -39,7 +39,7 @@
             var response = await this.DeleteAsync();
 
             // Assert
-            Assert.AreEqual(HttpStatusCode.Conflict, response.StatusCode);
+            Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
         }
     }
 }

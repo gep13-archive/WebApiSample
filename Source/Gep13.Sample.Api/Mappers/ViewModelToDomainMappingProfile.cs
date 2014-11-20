@@ -9,6 +9,8 @@
 
 namespace Gep13.Sample.Api.Mappers
 {
+    using System;
+
     using AutoMapper;
 
     using Gep13.Sample.Api.ViewModels;
@@ -27,7 +29,8 @@ namespace Gep13.Sample.Api.Mappers
 
         protected override void Configure()
         {
-            Mapper.CreateMap<ChemicalViewModel, ChemicalDto>();
+            Mapper.CreateMap<ChemicalViewModel, ChemicalDto>()
+                .ForMember(vm => vm.RowVersion, dm => dm.MapFrom(dModel => Convert.FromBase64String(dModel.RowVersion)));
             Mapper.CreateMap<ChemicalDto, Chemical>();
         }
     }

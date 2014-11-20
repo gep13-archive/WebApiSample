@@ -17,17 +17,17 @@ namespace Gep13.Sample.Service.Tests
     public class When_archiving_chemicals : CommonTestSetup
     {
         [Test]
-        public void Should_return_false_if_unable_to_find_chemical() 
+        public void Should_return_notfound_if_unable_to_find_entity() 
         {
             fakeChemicalRepository.GetById(1).Returns(x => null);
 
-            var actual = chemicalService.ArchiveChemical(1);
+            var databaseOperationStatus = chemicalService.ArchiveChemical(1);
 
-            Assert.That(actual, Is.False);
+            Assert.That(databaseOperationStatus, Is.EqualTo(DatabaseOperationStatus.NotFound));
         }
 
         [Test]
-        public void Should_return_true_if_archives_chemical() 
+        public void Should_return_success() 
         {
             var entity = new Chemical 
             {
@@ -36,10 +36,9 @@ namespace Gep13.Sample.Service.Tests
 
             fakeChemicalRepository.GetById(1).Returns(x => entity);
 
-            var actual = chemicalService.ArchiveChemical(1);
+            var databaseOperationStatus = chemicalService.ArchiveChemical(1);
 
-            Assert.That(actual, Is.True);
-            Assert.That(entity.IsArchived, Is.True);
+            Assert.That(databaseOperationStatus, Is.EqualTo(DatabaseOperationStatus.Success));
         }
     }
 }

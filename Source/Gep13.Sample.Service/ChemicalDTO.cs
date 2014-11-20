@@ -9,6 +9,8 @@
 
 namespace Gep13.Sample.Service
 {
+    using System.Security.AccessControl;
+
     public class ChemicalDto
     {
         public int Id { get; set; }
@@ -20,5 +22,7 @@ namespace Gep13.Sample.Service
         public bool IsArchived { get; set; }
 
         public double Balance { get; set; }
+
+        public byte[] RowVersion { get; set; }
     }
 }

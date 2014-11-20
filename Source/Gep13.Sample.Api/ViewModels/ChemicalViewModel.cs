@@ -20,5 +20,7 @@ namespace Gep13.Sample.Api.ViewModels
         public bool IsArchived { get; set; }
 
         public double Balance { get; set; }
+
+        public string RowVersion { get; set; }
     }
 }

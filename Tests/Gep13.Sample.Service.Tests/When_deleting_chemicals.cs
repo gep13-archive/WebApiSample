@@ -9,6 +9,8 @@
 
 namespace Gep13.Sample.Service.Tests 
 {
+    using System.Runtime;
+
     using Gep13.Sample.Model;
 
     using NSubstitute;
@@ -19,25 +21,27 @@ namespace Gep13.Sample.Service.Tests
     public class When_deleting_chemicals : CommonTestSetup
     {
         [Test]
-        public void Should_delete_chemical()
+        public void Should_return_success()
         {
             var fakeChemical = new Chemical { Id = 1 };
 
             fakeChemicalRepository.GetById(Arg.Any<int>()).Returns(fakeChemical);
 
-            chemicalService.DeleteChemical(1);
+            var databaseOperationStatus = chemicalService.DeleteChemical(1);
 
+            Assert.That(databaseOperationStatus, Is.EqualTo(DatabaseOperationStatus.Success));
             fakeChemicalRepository.Received().Delete(fakeChemical);
             fakeUnitOfWork.Received().SaveChanges();
         }
 
         [Test]
-        public void Should_not_delete_chemical_if_not_found()
+        public void Should_return_notfound_if_unable_to_find_entityt()
         {
             fakeChemicalRepository.GetById(Arg.Any<int>()).Returns(r => null);
 
-            chemicalService.DeleteChemical(1);
+            var databaseOperationStatus = chemicalService.DeleteChemical(1);
 
+            Assert.That(databaseOperationStatus, Is.EqualTo(DatabaseOperationStatus.NotFound));
             fakeChemicalRepository.DidNotReceive().Delete(Arg.Any<Chemical>());
             fakeUnitOfWork.DidNotReceive().SaveChanges();
         }         

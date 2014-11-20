@@ -10,11 +10,11 @@
 namespace Gep13.Sample.Service
 {
     using System;
+    using System.CodeDom;
     using System.Collections.Generic;
+    using System.Data.Entity.Infrastructure;
     using System.Linq;
-
     using AutoMapper;
-
     using Gep13.Sample.Data.Infrastructure;
     using Gep13.Sample.Data.Repositories;
     using Gep13.Sample.Model;
@@ -30,23 +30,24 @@ namespace Gep13.Sample.Service
             this.unitOfWork = unitOfWork;
         }
 
-        public IEnumerable<ChemicalDto> GetChemicals()
+        public DatabaseOperation<IEnumerable<ChemicalDto>> GetChemicals()
         {
             var chemicals = repository.GetAll();
-            return Mapper.Map<IEnumerable<Chemical>, IEnumerable<ChemicalDto>>(chemicals);
+            return new DatabaseOperation<IEnumerable<ChemicalDto>>
+                       {
+                           Status = DatabaseOperationStatus.Success,
+                           Result =
+                               Mapper
+                               .Map<IEnumerable<Chemical>, IEnumerable<ChemicalDto>>(chemicals)
+                       };
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "This needs to be looked at")]
-        public ChemicalDto AddChemical(string name, string code, double balance)
+        public DatabaseOperation<ChemicalDto> AddChemical(string name, string code, double balance)
         {
-            if (GetByName(name).Any())
+            if (GetByName(name).Any() || this.GetByCode(code).Any())
             {
-                return null;
-            }
-
-            if (this.GetByCode(code).Any())
-            {
-                return null;
+                return new DatabaseOperation<ChemicalDto>() { Status = DatabaseOperationStatus.Conflict, Result = null };
             }
 
             var entity = new Chemical { Name = name, Code = code, Balance = balance };
@@ -55,25 +56,51 @@ namespace Gep13.Sample.Service
             {
                 repository.Add(entity);
                 SaveChanges();
-                return Mapper.Map<Chemical, ChemicalDto>(entity);
+                return new DatabaseOperation<ChemicalDto>()
+                           {
+                               Status = DatabaseOperationStatus.Success,
+                               Result = Mapper.Map<Chemical, ChemicalDto>(entity)
+                           };
             }
             catch
             {
-                return null;
+                return new DatabaseOperation<ChemicalDto>()
+                           {
+                               Status = DatabaseOperationStatus.Exception,
+                               Result = null
+                           };
             }
         }
 
-        public ChemicalDto GetChemicalById(int id)
+        public DatabaseOperation<ChemicalDto> GetChemicalById(int id)
         {
-            return Mapper.Map<Chemical, ChemicalDto>(GetById(id));
+            var chemical = this.GetById(id);
+            return chemical == null
+                       ? new DatabaseOperation<ChemicalDto>()
+                             {
+                                 Status = DatabaseOperationStatus.NotFound,
+                                 Result = null
+                             }
+                       : new DatabaseOperation<ChemicalDto>()
+                             {
+                                 Status = DatabaseOperationStatus.Success,
+                                 Result = Mapper.Map<Chemical, ChemicalDto>(chemical)
+                             };
         }
 
-        public IEnumerable<ChemicalDto> GetChemicalByName(string name)
+        public DatabaseOperation<IEnumerable<ChemicalDto>> GetChemicalByName(string name)
         {
-            return Mapper.Map<IEnumerable<Chemical>, IEnumerable<ChemicalDto>>(GetByName(name));
+            var chemicals = this.GetByName(name);
+            return new DatabaseOperation<IEnumerable<ChemicalDto>>()
+                             {
+                                 Status = DatabaseOperationStatus.Success,
+                                 Result =
+                                     Mapper
+                                     .Map<IEnumerable<Chemical>, IEnumerable<ChemicalDto>>(chemicals)
+                             };
         }
 
-        public bool UpdateChemical(ChemicalDto chemicalDto)
+        public DatabaseOperation<ChemicalDto> UpdateChemical(ChemicalDto chemicalDto)
         {
             if (chemicalDto == null)
             {
@@ -84,52 +111,62 @@ namespace Gep13.Sample.Service
 
             if (chemical == null)
             {
-                return false;
+                return new DatabaseOperation<ChemicalDto>() { Status = DatabaseOperationStatus.NotFound, Result = null };
             }
 
-            if (this.GetByName(chemicalDto.Name).Any(c => c.Id != chemicalDto.Id))
+            if (this.GetByName(chemicalDto.Name).Any(c => c.Id != chemicalDto.Id) || this.GetByCode(chemicalDto.Code).Any(c => c.Id != chemicalDto.Id))
             {
-                return false;
+                return new DatabaseOperation<ChemicalDto>() { Status = DatabaseOperationStatus.Conflict, Result = null };
             }
 
-            if (this.GetByCode(chemicalDto.Code).Any(c => c.Id != chemicalDto.Id))
+            try
             {
-                return false;
+                Mapper.Map(chemicalDto, chemical);
+                this.repository.Update(chemical);
+                this.SaveChanges();
+                return new DatabaseOperation<ChemicalDto>()
+                           {
+                               Status = DatabaseOperationStatus.Success,
+                               Result = Mapper.Map<Chemical, ChemicalDto>(chemical)
+                           };
             }
-
-            Mapper.Map(chemicalDto, chemical);
-            this.repository.Update(chemical);
-            this.SaveChanges();
-            return true;
+            catch (DbUpdateConcurrencyException dbucException)
+            {
+                return new DatabaseOperation<ChemicalDto>()
+                           {
+                               Status = DatabaseOperationStatus.ConcurrencyProblem,
+                               Result = null
+                           };
+            }
         }
 
-        public bool DeleteChemical(int id)
+        public DatabaseOperationStatus DeleteChemical(int id)
         {
             var chemical = this.GetById(id);
 
             if (chemical == null)
             {
-                return false;
+                return DatabaseOperationStatus.NotFound;
             }
 
             this.repository.Delete(chemical);
             this.SaveChanges();
-            return true;
+            return DatabaseOperationStatus.Success;
         }
 
-        public bool ArchiveChemical(int id)
+        public DatabaseOperationStatus ArchiveChemical(int id)
         {
             var chemical = this.GetById(id);
 
             if (chemical == null)
             {
-                return false;
+                return DatabaseOperationStatus.NotFound;
             }
 
             chemical.IsArchived = true;
             this.repository.Update(chemical);
             this.SaveChanges();
-            return true;
+            return DatabaseOperationStatus.Success;
         }
 
         private IEnumerable<Chemical> GetByName(string name)
@@ -142,7 +179,7 @@ namespace Gep13.Sample.Service
             return this.repository.GetMany(s => s.Code == code);
         }
 
-        private Chemical GetById(int id) 
+        private Chemical GetById(int id)
         {
             return repository.GetById(id);
         }

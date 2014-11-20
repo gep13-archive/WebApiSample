@@ -1,6 +1,9 @@
 ﻿namespace Gep13.Sample.Api.IntegrationTests.Chemicals
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Net;
+    using System.Security.Policy;
     using System.Threading.Tasks;
 
     using Gep13.Sample.Api.ViewModels;
@@ -12,71 +15,63 @@
     [TestFixture]
     public class When_getting_chemicals : CommonAuthenticatedTestSetup
     {
+        private string uriBase = "api/Chemical";
+        private string uri = string.Empty;
+
         protected override string Uri
         {
-            get { return "/api/Chemical"; }
+            get
+            {
+                return uri;
+            }
         }
 
         [Test]
-        public async Task Should_return_statuscode_created_and_new_chemical_if_successful()
+        public async Task Should_return_status_code_ok_response()
         {
-            // Arrange
-            var model = new ChemicalViewModel
-            {
-                Name = "Chemical3",
-                Code = "3456",
-                IsArchived = false,
-                Balance = 15
-            };
+            this.uri = this.uriBase;
+            var response = await this.GetAsync();
+            response.EnsureSuccessStatusCode();
+        }
 
-            // Act
-            var response = await PostAsync(model);
+        [Test]
+        public async Task Should_return_json_response()
+        {
+            this.uri = this.uriBase;
+            var response = await this.GetAsync();
+            Assert.AreEqual("application/json", response.Content.Headers.ContentType.MediaType);
+        }
+
+        [Test]
+        public async Task Should_return_statuscode_ok_and_chemical_when_getting_chemical_by_id()
+        {
+            this.uri = string.Format("{0}{1}", this.uriBase, "/1");
+            var response = await this.GetAsync();
+            var jsonContent = JsonConvert.DeserializeObject<ChemicalViewModel>(response.Content.ReadAsStringAsync().Result);
+            response.EnsureSuccessStatusCode();
+            Assert.AreEqual("Chemical1", jsonContent.Name);
+            Assert.AreEqual(13, jsonContent.Balance);
+        }
+
+        [Test]
+        public async Task Should_return_statuscode_ok_when_getting_chemicals()
+        {
+            this.uri = this.uriBase;
+            var response = await this.GetAsync();
+            var jsonContent = JsonConvert.DeserializeObject<IEnumerable<ChemicalViewModel>>(response.Content.ReadAsStringAsync().Result);
+            response.EnsureSuccessStatusCode();
+            Assert.AreEqual(2, jsonContent.Count());
+        }
+
+        [Test]
+        public async Task Should_return_statuscode_notfound_and_null_entity_when_id_doesnt_exist()
+        {
+            this.uri = string.Format("{0}{1}", this.uriBase, "/13");
+            var response = await this.GetAsync();
             var jsonContent = JsonConvert.DeserializeObject<ChemicalViewModel>(response.Content.ReadAsStringAsync().Result);
 
-            // Assert
-            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
-            Assert.AreEqual(3, jsonContent.Id);
-            Assert.AreEqual("Chemical3", jsonContent.Name);
-            Assert.AreEqual(false, jsonContent.IsArchived);
-            Assert.AreEqual(15, jsonContent.Balance);
-        }
-
-        [Test]
-        public async Task Should_return_statuscode_conflict_if_adding_chemical_with_name_that_already_exists()
-        {
-            // Arrange
-            var model = new ChemicalViewModel
-            {
-                Name = "Chemical2",
-                Code = "3456",
-                IsArchived = false,
-                Balance = 15
-            };
-
-            // Act
-            var response = await PostAsync(model);
-
-            // Assert
-            Assert.AreEqual(HttpStatusCode.Conflict, response.StatusCode);
-        }
-
-        [Test]
-        public async Task Should_return_statuscode_conflict_if_adding_chemical_with_code_that_already_exists()
-        {
-            // Arrange
-            var model = new ChemicalViewModel
-            {
-                Name = "Chemical3",
-                Code = "2345",
-                IsArchived = false,
-                Balance = 15
-            };
-
-            // Act
-            var response = await PostAsync(model);
-
-            // Assert
-            Assert.AreEqual(HttpStatusCode.Conflict, response.StatusCode);
+            Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+            Assert.IsNull(jsonContent);
         }
     }
 }

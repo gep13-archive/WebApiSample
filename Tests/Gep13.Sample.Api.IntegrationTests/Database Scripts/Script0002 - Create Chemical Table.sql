@@ -14,6 +14,7 @@ CREATE TABLE [dbo].[Chemicals](
 	[Code] [varchar](128) NOT NULL,
 	[IsArchived] [bit] NOT NULL,
 	[Balance] [float] NULL,
+	[RowVersion] ROWVERSION NOT NULL,
  CONSTRAINT [PK_Chemicals] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC

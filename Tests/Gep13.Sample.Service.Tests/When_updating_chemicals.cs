@@ -21,7 +21,7 @@ namespace Gep13.Sample.Service.Tests
     public class When_updating_chemicals : CommonTestSetup
     {
         [Test]
-        public void Should_update()
+        public void Should_return_success_and_updated_entity()
         {
             var toUpdate = new Service.ChemicalDto
             {
@@ -30,11 +30,12 @@ namespace Gep13.Sample.Service.Tests
                 Name = "First"
             };
 
-            fakeChemicalRepository.GetById(1).Returns(new Chemical {Id = 1, Balance = 100, Name = "First"});
+            fakeChemicalRepository.GetById(1).Returns(new Chemical { Id = 1, Balance = 100, Name = "First" });
 
-            var actual = chemicalService.UpdateChemical(toUpdate);
+            var databaseOperation = chemicalService.UpdateChemical(toUpdate);
 
-            Assert.That(actual, Is.True);
+            Assert.That(databaseOperation, Is.Not.Null);
+            Assert.That(databaseOperation.Status, Is.EqualTo(DatabaseOperationStatus.Success));
             fakeChemicalRepository.Received().Update(Arg.Any<Chemical>());
             fakeUnitOfWork.Received().SaveChanges();
         }
@@ -46,27 +47,35 @@ namespace Gep13.Sample.Service.Tests
         }
 
         [Test]
-        public void Should_return_false_if_unable_to_find_record()
+        public void Should_return_notfound_if_unable_to_find_record()
         {
             fakeChemicalRepository.GetById(1).Returns(x => null);
 
-            Assert.That(()=> chemicalService.UpdateChemical(new ChemicalDto{Id = 1}),Is.False);
+            var databaseOperation = chemicalService.UpdateChemical(new ChemicalDto { Id = 1 });
+
+            Assert.That(databaseOperation, Is.Not.Null);
+            Assert.That(databaseOperation.Status, Is.EqualTo(DatabaseOperationStatus.NotFound));
         }
 
         [Test]
-        public void Should_return_false_if_another_Chemical_found_with_same_name()
+        public void Should_return_notfound_if_another_Chemical_found_with_same_name()
         {
-            fakeChemicalRepository.GetMany(x => x.Name == "Test").Returns( new [] {new Chemical {Id = 2}});
+            fakeChemicalRepository.GetMany(x => x.Name == "Test").Returns(new[] { new Chemical { Id = 2 } });
 
-            Assert.That(()=> chemicalService.UpdateChemical(new ChemicalDto{Id = 1, Name = "Test"}),Is.False);
+            var databaseOperation = chemicalService.UpdateChemical(new ChemicalDto { Id = 1, Name = "Test" });
+            Assert.That(databaseOperation, Is.Not.Null);
+            Assert.That(databaseOperation.Status, Is.EqualTo(DatabaseOperationStatus.NotFound));
         }
 
         [Test]
         public void Should_return_false_if_another_chemical_found_with_same_code()
         {
-            fakeChemicalRepository.GetMany(x => x.Code == "123").Returns(new[] {new Chemical {Id = 2, Code = "123"}});
+            fakeChemicalRepository.GetMany(x => x.Code == "123").Returns(new[] { new Chemical { Id = 2, Code = "123" } });
 
-            Assert.That(() => chemicalService.UpdateChemical(new ChemicalDto{Id=1, Code = "123"}), Is.False);
+            var databaseOperation = chemicalService.UpdateChemical(new ChemicalDto { Id = 1, Code = "123" });
+
+            Assert.That(databaseOperation, Is.Not.Null);
+            Assert.That(databaseOperation.Status, Is.EqualTo(DatabaseOperationStatus.NotFound));
         }
     }
 }

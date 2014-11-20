@@ -13,9 +13,7 @@ namespace Gep13.Sample.Api.Controllers
     using System.Collections.Generic;
     using System.Net;
     using System.Web.Http;
-
     using AutoMapper;
-
     using Gep13.Sample.Api.ViewModels;
     using Gep13.Sample.Service;
 
@@ -30,55 +28,90 @@ namespace Gep13.Sample.Api.Controllers
 
         public IHttpActionResult Get()
         {
-            var chemicalViewModels = Mapper.Map<IEnumerable<ChemicalDto>, IEnumerable<ChemicalViewModel>>(chemicalService.GetChemicals());
-            return Ok(chemicalViewModels);
+            var databaseOperation = this.chemicalService.GetChemicals();
+
+            switch (databaseOperation.Status)
+            {
+                case DatabaseOperationStatus.Success:
+                    var chemicalViewModels = Mapper.Map<IEnumerable<ChemicalDto>, IEnumerable<ChemicalViewModel>>(databaseOperation.Result);
+                    return Ok(chemicalViewModels);
+                default:
+                    return this.StatusCode(HttpStatusCode.InternalServerError);
+            }
         }
 
         public IHttpActionResult Get(int id)
         {
-            var chemicalViewModel = Mapper.Map<ChemicalDto, ChemicalViewModel>(chemicalService.GetChemicalById(id));
-            return Ok(chemicalViewModel);
+            var databaseOperation = this.chemicalService.GetChemicalById(id);
+
+            switch (databaseOperation.Status)
+            {
+                case DatabaseOperationStatus.NotFound:
+                    return this.StatusCode(HttpStatusCode.NotFound);
+                case DatabaseOperationStatus.Success:
+                    var chemicalViewModel = Mapper.Map<ChemicalDto, ChemicalViewModel>(databaseOperation.Result);
+                    return this.Ok(chemicalViewModel);
+                default:
+                    return this.StatusCode(HttpStatusCode.InternalServerError);
+            }
         }
 
         [Authorize(Roles = "Admin")]
-        public IHttpActionResult Post(ChemicalViewModel chemicalViewModel) 
+        public IHttpActionResult Post(ChemicalViewModel chemicalViewModel)
         {
             if (chemicalViewModel == null)
             {
                 throw new ArgumentNullException("chemicalViewModel");
             }
 
-            var item = chemicalService.AddChemical(chemicalViewModel.Name, chemicalViewModel.Code, chemicalViewModel.Balance);
+            var databaseOperation = this.chemicalService.AddChemical(chemicalViewModel.Name, chemicalViewModel.Code, chemicalViewModel.Balance);
 
-            if (item == null) 
+            switch (databaseOperation.Status)
             {
-                return StatusCode(HttpStatusCode.Conflict);
+                case DatabaseOperationStatus.Conflict:
+                    return this.StatusCode(HttpStatusCode.Conflict);
+                case DatabaseOperationStatus.Success:
+                    return Created(Url.Link("DefaultApi", new { controller = "Chemical", id = databaseOperation.Result.Id }), databaseOperation.Result);
+                case DatabaseOperationStatus.Exception:
+                    return this.StatusCode(HttpStatusCode.InternalServerError);
+                default:
+                    return this.StatusCode(HttpStatusCode.InternalServerError);
             }
-
-            return Created(Url.Link("DefaultApi", new { controller = "Chemical", id = item.Id }), item);
         }
 
         [Authorize(Roles = "Admin")]
         public IHttpActionResult Put(ChemicalViewModel chemicalViewModel)
         {
-            if (chemicalService.UpdateChemical(Mapper.Map<ChemicalViewModel, ChemicalDto>(chemicalViewModel))) 
+            var databaseOperation = this.chemicalService.UpdateChemical(Mapper.Map<ChemicalViewModel, ChemicalDto>(chemicalViewModel));
+            
+            switch (databaseOperation.Status)
             {
-                return Ok(chemicalViewModel);
+                case DatabaseOperationStatus.Conflict:
+                    return this.StatusCode(HttpStatusCode.Conflict);
+                case DatabaseOperationStatus.Success:
+                    return this.Ok(databaseOperation.Result);
+                case DatabaseOperationStatus.ConcurrencyProblem:
+                    return this.StatusCode(HttpStatusCode.PreconditionFailed);
+                default:
+                    return this.StatusCode(HttpStatusCode.InternalServerError);
             }
-
-            return StatusCode(HttpStatusCode.Conflict);
         }
 
         [HttpDelete]
         [Authorize(Roles = "Admin")]
         public IHttpActionResult Archive(int id)
         {
-            if (chemicalService.ArchiveChemical(id))
-            {
-                return Ok();
-            }
+            var databaseOperation = this.chemicalService.ArchiveChemical(id);
 
-            return StatusCode(HttpStatusCode.Conflict);
+            switch (databaseOperation)
+            {
+                case DatabaseOperationStatus.Success:
+                    return this.Ok();
+                case DatabaseOperationStatus.NotFound:
+                    return this.StatusCode(HttpStatusCode.NotFound);
+                default:
+                    return this.StatusCode(HttpStatusCode.InternalServerError);
+            }
         }
     }
 }

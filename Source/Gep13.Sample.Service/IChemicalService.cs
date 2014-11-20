@@ -14,18 +14,18 @@ namespace Gep13.Sample.Service
     public interface IChemicalService
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Not applicable")]
-        IEnumerable<ChemicalDto> GetChemicals();
+        DatabaseOperation<IEnumerable<ChemicalDto>> GetChemicals();
 
-        ChemicalDto AddChemical(string name, string code, double balance);
+        DatabaseOperation<ChemicalDto> AddChemical(string name, string code, double balance);
 
-        ChemicalDto GetChemicalById(int id);
+        DatabaseOperation<ChemicalDto> GetChemicalById(int id);
 
-        IEnumerable<ChemicalDto> GetChemicalByName(string name);
+        DatabaseOperation<IEnumerable<ChemicalDto>> GetChemicalByName(string name);
 
-        bool UpdateChemical(ChemicalDto chemicalDto);
+        DatabaseOperation<ChemicalDto> UpdateChemical(ChemicalDto chemicalDto);
 
-        bool DeleteChemical(int id);
+        DatabaseOperationStatus DeleteChemical(int id);
 
-        bool ArchiveChemical(int id);
+        DatabaseOperationStatus ArchiveChemical(int id);
     }
 }

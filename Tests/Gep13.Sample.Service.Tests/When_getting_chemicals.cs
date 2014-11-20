@@ -35,40 +35,42 @@ namespace Gep13.Sample.Service.Tests
         }
 
         [Test]
-        public void Should_get_chemical_by_id()
+        public void Should_return_success_and_chemical_by_id()
         {
             fakeChemicalRepository.GetById(1).Returns(new Chemical { Id = 1 });
 
-            var checmical = chemicalService.GetChemicalById(1);
+            var databaseOperation = chemicalService.GetChemicalById(1);
 
-            Assert.That(checmical.Id, Is.EqualTo(1));
-
+            Assert.That(databaseOperation.Status, Is.EqualTo(DatabaseOperationStatus.Success));
+            Assert.That(databaseOperation.Result.Id, Is.EqualTo(1));
             fakeChemicalRepository.Received().GetById(1);
         }
 
         [Test]
-        public void Shoud_get_chemicals()
+        public void Shoud_return_success()
         {
             fakeChemicalRepository.GetAll().Returns(chemicals);
 
-            var actual = chemicalService.GetChemicals();
+            var databaseOperation = chemicalService.GetChemicals();
 
-            Assert.That(actual.Count(), Is.EqualTo(3));
+            Assert.That(databaseOperation.Status, Is.EqualTo(DatabaseOperationStatus.Success));
+            Assert.That(databaseOperation.Result.Count(), Is.EqualTo(3));
         }
 
         [Test]
-        public void Should_get_chemical_by_name()
+        public void Should_return_success_and_get_chemical_by_name()
         {
             const string ChemicalName = "First";
 
             // Don't like this! First time I've found a problem with NSubstitute trying to mock the Expression<func<Checmical,bool>>
             fakeChemicalRepository.GetMany(x => x.Name == Arg.Is(ChemicalName)).ReturnsForAnyArgs(chemicals.Where(x => x.Name == ChemicalName));
 
-            var result = chemicalService.GetChemicalByName(ChemicalName).ToList();
+            var databaseOperation = chemicalService.GetChemicalByName(ChemicalName);
 
-            Assert.That(result.Count, Is.EqualTo(1));
-            Assert.That(result[0].Id, Is.EqualTo(1));
-            Assert.That(result[0].Name, Is.EqualTo(ChemicalName));
+            Assert.That(databaseOperation.Status, Is.EqualTo(DatabaseOperationStatus.Success));
+            Assert.That(databaseOperation.Result.ToList().Count(), Is.EqualTo(1));
+            Assert.That(databaseOperation.Result.ToList()[0].Id, Is.EqualTo(1));
+            Assert.That(databaseOperation.Result.ToList()[0].Name, Is.EqualTo(ChemicalName));
         }
 
         [Test]
@@ -78,9 +80,10 @@ namespace Gep13.Sample.Service.Tests
 
             fakeChemicalRepository.GetMany(x => x.Name == Arg.Is(Missing)).ReturnsForAnyArgs(chemicals.Where(x => x.Name == Missing));
 
-            var result = chemicalService.GetChemicalByName(Missing);
+            var databaseOperation = chemicalService.GetChemicalByName(Missing);
 
-            Assert.That(result, Is.Empty);
+            Assert.That(databaseOperation.Status, Is.EqualTo(DatabaseOperationStatus.Success));
+            Assert.That(databaseOperation.Result, Is.Empty);
         }
     }
 }

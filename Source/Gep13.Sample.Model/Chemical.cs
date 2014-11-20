@@ -9,6 +9,7 @@
 
 namespace Gep13.Sample.Model
 {
+    using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("Chemicals")]
@@ -23,5 +24,8 @@ namespace Gep13.Sample.Model
         public bool IsArchived { get; set; }
 
         public double Balance { get; set; }
+
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
     }
 }
